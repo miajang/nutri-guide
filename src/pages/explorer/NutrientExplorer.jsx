@@ -228,7 +228,7 @@ export default function NutrientExplorer() {
               {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
             </select>
             {!isMobile && (
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients or foods\u2026" style={{ flex: 1, maxWidth: 300, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{ flex: 1, maxWidth: 300, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
             )}
             <span onClick={() => setChatOpen(true)} style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
               <NavIcon type="chat" color={t.primary} /> Ask Expert
@@ -257,7 +257,7 @@ export default function NutrientExplorer() {
         </div>
         {isMobile && (
           <div style={{ marginTop: 8 }}>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients or foods\u2026" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           </div>
         )}
       </header>
