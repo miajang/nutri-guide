@@ -365,7 +365,7 @@ export default function NutriGuide() {
   const suppAll=relN.filter(n=>n.supp);
 
   const contentRef=useRef(null);
-  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){const elRect=el.getBoundingClientRect();const contRect=container.getBoundingClientRect();container.scrollTo({top:container.scrollTop+(elRect.top-contRect.top)-12,behavior:"smooth"});}};
+  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){const elRect=el.getBoundingClientRect();const contRect=container.getBoundingClientRect();container.scrollTo({top:container.scrollTop+(elRect.top-contRect.top)-8,behavior:"smooth"});}};
 
   useEffect(()=>{
     if(screen!=="guidance")return;
@@ -526,7 +526,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Nutrients */}
-          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:20,paddingTop:24,borderTop:"1px solid #e8eeec"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions — most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
             {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
@@ -534,7 +534,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Foods to Limit */}
-          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:20,paddingTop:24,borderTop:"1px solid #e8eeec"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited — frequency and portion size matter most.</p>
             {relF.length>0?(
@@ -549,7 +549,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Supplements */}
-          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:20,paddingTop:24,borderTop:"1px solid #e8eeec"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only — not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
             {suppAll.length>0?(
