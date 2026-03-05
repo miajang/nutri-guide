@@ -218,7 +218,7 @@ export default function NutrientExplorer() {
       {/* ── HEADER ── */}
       <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", position: "sticky", top: 0, zIndex: 100, padding: "10px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-          <div style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
+          <div style={{ flexShrink: 0, whiteSpace: "nowrap", width: isMobile ? "auto" : 190 }}>
             <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
             <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}
             <span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
