@@ -214,7 +214,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
     <div style={{background:"#fff",borderRadius:14,overflow:"hidden",boxShadow:"0 3px 12px rgba(0,0,0,.08)",gridColumn:"1 / -1",border:`1.5px solid ${t.mid}`}}>
       <div onClick={onToggle} style={{padding:"16px 18px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",background:t.lt}}>
         <div style={{fontSize:".96rem",fontWeight:600,color:t.pri}}>{n.name}</div>
-        <div style={{fontSize:".78rem",color:t.learn,fontWeight:600}}>Close</div>
+        <button onClick={e=>{e.stopPropagation();onToggle();}} style={{width:28,height:28,borderRadius:6,background:"#f5f5f5",border:"1px solid #e8e8e8",cursor:"pointer",fontSize:".8rem",color:"#999",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
       </div>
       <div style={{padding:"18px"}}>
         <div style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginBottom:14}}>{n.detail}</div>
@@ -242,7 +242,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
         {loading&&<Spinner/>}
         {dive&&!loading&&(
           <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75,position:"relative"}}>
-            <button onClick={doDive} style={{position:"absolute",top:10,right:10,background:"transparent",border:"none",cursor:"pointer",fontSize:".78rem",color:"#999",fontWeight:500,display:"flex",alignItems:"center",gap:3}}>Close {"\u2715"}</button>
+            <button onClick={doDive} style={{position:"absolute",top:8,right:8,width:26,height:26,borderRadius:6,background:"#f5f5f5",border:"1px solid #e8e8e8",cursor:"pointer",fontSize:".78rem",color:"#999",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
             <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
               AI-Generated Personalized Guidance
             </div>
@@ -307,7 +307,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
         )}
         {msgs.map((m,i)=>(
           <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.pri:t.lt,color:m.role==="user"?"#fff":"#444",fontSize:".86rem",lineHeight:1.7}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.mid:t.lt,color:m.role==="user"?t.dk:"#444",fontSize:".86rem",lineHeight:1.7}}>
               {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
             </div>
           </div>
@@ -488,7 +488,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Connections */}
-          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:36,scrollMarginTop:20}}>
+          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:36,scrollMarginTop:70}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="connection" color={t.pri}/> How Your Conditions Are Linked</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Many chronic conditions share the same underlying biological processes. Understanding these connections explains why improving one area of your nutrition can benefit multiple conditions at once.</p>
             {selConds.map(c=>(
@@ -525,7 +525,8 @@ export default function NutriGuide() {
           </div>
 
           {/* Nutrients */}
-          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:20}}>
+          <div style={{height:1,background:"#e8e8e8"}}/>
+          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions \u2014 most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
             {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
@@ -533,7 +534,8 @@ export default function NutriGuide() {
           </div>
 
           {/* Foods to Limit */}
-          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:20}}>
+          <div style={{height:1,background:"#e8e8e8"}}/>
+          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited \u2014 frequency and portion size matter most.</p>
             {relF.length>0?(
@@ -548,7 +550,8 @@ export default function NutriGuide() {
           </div>
 
           {/* Supplements */}
-          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:20}}>
+          <div style={{height:1,background:"#e8e8e8"}}/>
+          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only \u2014 not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
             {suppAll.length>0?(
