@@ -201,7 +201,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
           <div style={{fontSize:".95rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</div>
           <div style={{fontSize:".82rem",color:"#666",lineHeight:1.55,flex:1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.simple}</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10}}>
-            {rel.slice(0,3).map(c=><span key={c.id} style={{fontSize:".68rem",background:t.lt,color:t.pri,borderRadius:6,padding:"2px 7px",fontWeight:500}}>{c.icon} {c.name}</span>)}
+            {rel.slice(0,3).map(c=><span key={c.id} style={{fontSize:".68rem",background:"#f0f0f0",color:"#666",borderRadius:6,padding:"2px 7px",fontWeight:500}}>{c.icon} {c.name}</span>)}
             {rel.length>3&&<span style={{fontSize:".68rem",color:"#999",padding:"2px 4px"}}>+{rel.length-3}</span>}
           </div>
         </div>
@@ -296,18 +296,18 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
         <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
         <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:16}}>
+      <div style={{flex:1,overflowY:"auto",padding:16,display:"flex",flexDirection:"column",justifyContent:msgs.length===0?"flex-end":"flex-start"}}>
         {msgs.length===0&&(
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
-            <div style={{display:"flex",flexDirection:"column",gap:5,marginBottom:0}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:t.pri,cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+            <div style={{display:"flex",flexDirection:"column",gap:5}}>
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:"#f0f0f0",border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#555",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
         {msgs.map((m,i)=>(
           <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.mid:t.lt,color:m.role==="user"?t.dk:"#444",fontSize:".86rem",lineHeight:1.7}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?"#f0f0f0":t.lt,color:m.role==="user"?"#444":"#444",fontSize:".86rem",lineHeight:1.7}}>
               {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
             </div>
           </div>
@@ -507,7 +507,7 @@ export default function NutriGuide() {
                       Shared Biological Pathways
                     </div>
                     <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>Your conditions share key biological pathways. Improving them through nutrition benefits all your health concerns.</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:t.badge,color:t.badgeTxt,borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:"#f0f0f0",color:"#666",borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
                   </div>
                   <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,whiteSpace:"nowrap"}}>{pathOpen?"Show less \u25B2":"Learn more \u25BC"}</div>
                 </div>
@@ -526,35 +526,32 @@ export default function NutriGuide() {
           </div>
 
           {/* Nutrients */}
-          <div style={{height:1,background:"#e8e8e8"}}/>
           <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions \u2014 most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
+            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions — most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
             {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
             {bioactives.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"22px 0 12px"}}>Bioactive Compounds</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{bioactives.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
           </div>
 
           {/* Foods to Limit */}
-          <div style={{height:1,background:"#e8e8e8"}}/>
           <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited \u2014 frequency and portion size matter most.</p>
+            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited — frequency and portion size matter most.</p>
             {relF.length>0?(
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))",gap:14}}>
                 {relF.map((f,i)=><div key={i} style={{background:"#fff",borderRadius:14,padding:"18px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0"}}>
                   <div style={{fontSize:".88rem",fontWeight:600,color:"#333",marginBottom:4}}>{f.food}</div>
                   <div style={{fontSize:".82rem",color:"#999",marginBottom:10,lineHeight:1.5}}>{f.reason}</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#fef4f4",color:"#b5543a",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#f0f0f0",color:"#666",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
                 </div>)}
               </div>
             ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>No specific foods to limit identified.</div>}
           </div>
 
           {/* Supplements */}
-          <div style={{height:1,background:"#e8e8e8"}}/>
           <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only \u2014 not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
+            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only — not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
             {suppAll.length>0?(
               <>
                 {suppAll.filter(n=>n.type==="nutrient").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="nutrient").map(n=><div key={n.id} style={{background:"#fff",borderRadius:14,padding:"18px 18px 16px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
