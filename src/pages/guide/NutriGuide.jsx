@@ -301,13 +301,13 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.mid,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#fff",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.badge,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
         {msgs.map((m,i)=>(
           <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?"#f0f0f0":t.lt,color:m.role==="user"?"#444":"#444",fontSize:".86rem",lineHeight:1.7}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
               {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
             </div>
           </div>
