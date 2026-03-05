@@ -248,7 +248,7 @@ export default function NutrientExplorer() {
         </div>
         {/* Row 2: Tagline + Food Filter + Search + Ask Expert */}
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
-          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0 }}>AI-Powered Nutrient Facts</span>
+          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 176, minWidth: isMobile ? "auto" : 176 }}>AI-Powered Nutrient Facts</span>
           <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "6px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
             {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
           </select>
