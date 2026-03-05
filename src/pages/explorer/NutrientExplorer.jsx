@@ -222,6 +222,7 @@ export default function NutrientExplorer() {
           <div>
             <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
             <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
+            <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 2 }}>AI-Powered Nutrient Facts</div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
             <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
@@ -246,9 +247,8 @@ export default function NutrientExplorer() {
             )}
           </div>
         </div>
-        {/* Row 2: Tagline + Food Filter + Search + Ask Expert */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
-          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 176, minWidth: isMobile ? "auto" : 176 }}>AI-Powered Nutrient Facts</span>
+        {/* Row 2: Food Filter + Search + Ask Expert */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 2, marginLeft: isMobile ? 0 : 186 }}>
           <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "6px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
             {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
           </select>
