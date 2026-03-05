@@ -291,12 +291,12 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
 
   if(!isOpen) return null;
   return (
-    <div style={{position:"fixed",bottom:0,right:0,width:390,maxWidth:"100vw",height:"min(620px, 85vh)",background:"#fff",borderTopLeftRadius:16,boxShadow:"-4px -4px 24px rgba(0,0,0,.15)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
+    <div style={{position:"fixed",bottom:0,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderTopLeftRadius:16,boxShadow:"-4px -4px 24px rgba(0,0,0,.15)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
       <div style={{padding:"14px 18px",background:t.lt,borderBottom:`1px solid ${t.mid}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
         <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:16,display:"flex",flexDirection:"column",justifyContent:msgs.length===0?"flex-end":"flex-start"}}>
+      <div style={{flex:1,overflowY:"auto",padding:16}}>
         {msgs.length===0&&(
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
