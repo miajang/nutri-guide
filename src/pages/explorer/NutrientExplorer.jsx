@@ -223,14 +223,14 @@ export default function NutrientExplorer() {
             <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}
             <span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1 }}>
             <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "7px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
               {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
             </select>
             {!isMobile && (
               <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients or foods\u2026" style={{ flex: 1, maxWidth: 300, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
             )}
-            <span onClick={() => setChatOpen(true)} style={{ display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
+            <span onClick={() => setChatOpen(true)} style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
               <NavIcon type="chat" color={t.primary} /> Ask Expert
             </span>
             <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
