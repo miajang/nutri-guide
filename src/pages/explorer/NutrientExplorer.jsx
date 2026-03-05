@@ -56,6 +56,106 @@ const PrintIcon = () => (
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
 );
 
+// ─── AI CHAT HELPERS ───
+const CHAT_SYS = `You are NutrientExplorer AI, a nutrition knowledge assistant helping adults 50+ understand nutrients.
+
+FOR SIMPLE QUESTIONS (quick facts, "what does X do", "how much do I need"):
+- Give a direct, concise answer in 2-3 sentences.
+
+FOR DEEPER QUESTIONS (nutrient interactions, food strategies, deficiency concerns):
+- Brief intro sentence, then 3-4 key points with **bold names:** followed by explanation.
+- End with "**Tip:** [one actionable step]"
+
+RULES:
+- Warm, concise tone. Never exceed 200 words.
+- Tie answers to the user's sex/age profile when relevant.
+- Stay within nutrition scope - redirect medical questions to providers.
+- No bullet points - use bold names with dash for recommendations.`;
+
+async function callAI(sys, msg, history) {
+  try {
+    const messages = history ? [...history, {role:"user",content:msg}] : [{role:"user",content:msg}];
+    const r = await fetch("/api/chat", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({system:sys,messages})
+    });
+    const d = await r.json();
+    return d.text||"No response received.";
+  } catch(e) { return "Error connecting to AI. Please try again."; }
+}
+
+const Spinner = () => <div style={{display:"flex",alignItems:"center",gap:8,padding:"12px 0"}}><div style={{width:16,height:16,border:"2px solid #ccc",borderTopColor:"currentColor",borderRadius:"50%",animation:"spin .8s linear infinite"}}/><span style={{fontSize:".84rem",color:"#888"}}>Generating...</span></div>;
+
+const NavIcon = ({type,color}) => {
+  if(type==="chat") return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+  return null;
+};
+
+const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
+  const [msgs,setMsgs]=useState([]);
+  const [input,setInput]=useState("");
+  const [loading,setLoading]=useState(false);
+  const endRef=useRef(null);
+  const inputRef=useRef(null);
+
+  useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth"});},[msgs,loading]);
+  useEffect(()=>{if(isOpen){setMsgs([]);setInput("");inputRef.current?.focus();}},[isOpen]);
+
+  const send=async()=>{
+    if(!input.trim()||loading)return;
+    const userMsg=input.trim();
+    setInput("");
+    setMsgs(prev=>[...prev,{role:"user",text:userMsg}]);
+    setLoading(true);
+    const ctx=`User profile: ${sex}, age ${age}.`;
+    const sys=CHAT_SYS+`\n\n${ctx}`;
+    const history=msgs.slice(-6).map(m=>({role:m.role==="user"?"user":"assistant",content:m.text}));
+    const result=await callAI(sys,userMsg,history);
+    setMsgs(prev=>[...prev,{role:"assistant",text:result}]);
+    setLoading(false);
+  };
+
+  const renderMsg=(text)=>{
+    const parts=text.split(/\*\*([^*]+)\*\*/g);
+    return parts.map((p,i)=>i%2===1?<strong key={i} style={{display:p.endsWith(':')?'block':'inline'}}>{p}</strong>:<span key={i}>{p}</span>);
+  };
+
+  const suggestions=["Which nutrients work best together?","Top foods for bone health after 50?","How much protein do I really need?"];
+
+  if(!isOpen) return null;
+  return (
+    <div style={{position:"fixed",top:57,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderBottomLeftRadius:16,boxShadow:"-4px 4px 24px rgba(0,0,0,.12)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
+      <div style={{padding:"14px 18px",background:t.light,borderBottom:`1px solid ${t.mid}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+        <div><div style={{fontWeight:700,fontSize:".92rem",color:t.primary}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>Nutrient Explorer {"\u00B7"} AI Guidance</div></div>
+        <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
+      </div>
+      <div style={{flex:1,overflowY:"auto",padding:16}}>
+        {msgs.length===0&&(
+          <div>
+            <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor. Try asking:"}</p>
+            <div style={{display:"flex",flexDirection:"column",gap:5}}>
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.light,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+            </div>
+          </div>
+        )}
+        {msgs.map((m,i)=>(
+          <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badgeBg:t.light,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
+              {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
+            </div>
+          </div>
+        ))}
+        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.light}}><Spinner/></div></div>}
+        <div ref={endRef}/>
+      </div>
+      <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
+        <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrients..." style={{flex:1,padding:"10px 14px",border:`1.5px solid ${t.mid}`,borderRadius:10,fontSize:".88rem",outline:"none"}}/>
+        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.primary,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+      </div>
+    </div>
+  );
+};
+
 // ─── MAIN APP ───
 export default function NutrientExplorer() {
   const nav = useNavigate();
@@ -68,6 +168,7 @@ export default function NutrientExplorer() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalNutrient, setModalNutrient] = useState(null);
+  const [chatOpen, setChatOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const t = themes[theme];
@@ -111,6 +212,7 @@ export default function NutrientExplorer() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
       <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", position: "sticky", top: 0, zIndex: 100, padding: "10px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -149,6 +251,11 @@ export default function NutrientExplorer() {
               </button>
             )}
           </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 4 }}>
+          <span onClick={() => setChatOpen(true)} style={{ display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer" }}>
+            <NavIcon type="chat" color={t.primary} /> Ask Expert
+          </span>
         </div>
         {isMobile && (
           <div style={{ marginTop: 8 }}>
@@ -210,6 +317,9 @@ export default function NutrientExplorer() {
 
       {/* ── MODAL ── */}
       {modalNutrient && <NutrientModal nutrient={modalNutrient} sex={sex} age={age} theme={t} onClose={() => setModalNutrient(null)} />}
+
+      {/* ── CHAT ── */}
+      <ExplorerChatPanel isOpen={chatOpen} onClose={() => setChatOpen(false)} sex={sex} age={age} t={t} />
     </div>
   );
 }
@@ -228,7 +338,7 @@ function NutrientCard({ nutrient, theme, onClick }) {
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.08)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,.05)"; e.currentTarget.style.transform = "none"; }}>
       <div style={{ padding: "13px 15px", flex: 1, display: "flex", flexDirection: "column" }}>
-        <div style={{ fontSize: ".66rem", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, marginBottom: 2, color: theme.primary }}>{nutrient.cat}</div>
+        <div style={{ fontSize: ".66rem", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, marginBottom: 2, color: "#aaa" }}>{nutrient.cat}</div>
         <div style={{ fontSize: ".92rem", fontWeight: 600, color: "#333", lineHeight: 1.3 }}>{nutrient.name}</div>
         {nutrient.aka && <div style={{ fontSize: ".74rem", color: "#aaa", marginTop: 1 }}>{nutrient.aka}</div>}
         <div style={{ fontSize: ".8rem", color: "#555", marginTop: 5, lineHeight: 1.5, display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden", flex: 1 }}>{nutrient.func}</div>
@@ -292,10 +402,10 @@ function NutrientModal({ nutrient, sex, age, theme, onClose }) {
             <div style={{ fontSize: ".78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", color: "#888", marginBottom: 6 }}>Food Sources</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
               {n.foods.map((f, i) => (
-                <div key={i} style={{ background: theme.contentBg, borderRadius: 7, padding: "7px 10px", fontSize: ".8rem" }}>
+                <div key={i} style={{ background: "#f7f7f7", borderRadius: 7, padding: "7px 10px", fontSize: ".8rem" }}>
                   <strong style={{ display: "block", color: "#333", fontWeight: 600 }}>{f.n}</strong>
                   <span style={{ color: "#888" }}>{f.s}: {f.v}</span>
-                  {f.note && <div style={{ color: theme.primary, fontSize: ".74rem", fontWeight: 600, marginTop: 1 }}>{f.note}</div>}
+                  {f.note && <div style={{ color: "#888", fontSize: ".74rem", fontWeight: 600, marginTop: 1 }}>{f.note}</div>}
                 </div>
               ))}
             </div>
