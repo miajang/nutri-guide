@@ -214,7 +214,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
     <div style={{background:"#fff",borderRadius:14,overflow:"hidden",boxShadow:"0 3px 12px rgba(0,0,0,.08)",gridColumn:"1 / -1",border:`1.5px solid ${t.mid}`}}>
       <div onClick={onToggle} style={{padding:"16px 18px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",background:t.lt}}>
         <div style={{fontSize:".96rem",fontWeight:600,color:t.pri}}>{n.name}</div>
-        <button onClick={e=>{e.stopPropagation();onToggle();}} style={{width:28,height:28,borderRadius:6,background:"#f5f5f5",border:"1px solid #e8e8e8",cursor:"pointer",fontSize:".8rem",color:"#999",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+        <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,cursor:"pointer"}}>Close</div>
       </div>
       <div style={{padding:"18px"}}>
         <div style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginBottom:14}}>{n.detail}</div>
@@ -242,7 +242,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
         {loading&&<Spinner/>}
         {dive&&!loading&&(
           <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75,position:"relative"}}>
-            <button onClick={doDive} style={{position:"absolute",top:8,right:8,width:26,height:26,borderRadius:6,background:"#f5f5f5",border:"1px solid #e8e8e8",cursor:"pointer",fontSize:".78rem",color:"#999",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+            <button onClick={doDive} style={{position:"absolute",top:10,right:12,background:"transparent",border:"none",cursor:"pointer",fontSize:".78rem",color:t.learn,fontWeight:600}}>Close</button>
             <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
               AI-Generated Personalized Guidance
             </div>
@@ -284,7 +284,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
 
   const renderMsg=(text)=>{
     const parts=text.split(/\*\*([^*]+)\*\*/g);
-    return parts.map((p,i)=>i%2===1?<strong key={i}>{p}</strong>:<span key={i}>{p}</span>);
+    return parts.map((p,i)=>i%2===1?<strong key={i} style={{display:p.endsWith(':')?'block':'inline'}}>{p}</strong>:<span key={i}>{p}</span>);
   };
 
   const suggestions=["What should I eat for breakfast?","Best anti-inflammatory foods for me?","How do my conditions interact nutritionally?"];
@@ -364,7 +364,8 @@ export default function NutriGuide() {
   const relF=foodsToLimit.filter(f=>f.conds.some(c=>selIds.includes(c)));
   const suppAll=relN.filter(n=>n.supp);
 
-  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);sectionRefs.current[sec]?.scrollIntoView({behavior:"smooth",block:"start"});};
+  const contentRef=useRef(null);
+  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){container.scrollTo({top:el.offsetTop-container.offsetTop,behavior:"smooth"});}};
 
   useEffect(()=>{
     if(screen!=="guidance")return;
@@ -454,9 +455,9 @@ export default function NutriGuide() {
             </button>
             <SettingsPopover/>
           </div>
-          <button onClick={()=>setChatOpen(true)} title="Ask Expert" style={{display:"flex",alignItems:"center",gap:6,padding:"6px 14px",borderRadius:8,background:t.lt,border:`1px solid ${t.mid}`,cursor:"pointer",color:t.pri,fontSize:".8rem",fontWeight:600,marginLeft:4}}>
+          <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.pri,fontSize:".8rem",fontWeight:600,cursor:"pointer",marginLeft:4}}>
             <NavIcon type="chat" color={t.pri}/> Ask Expert
-          </button>
+          </span>
           <button className="ngHam" onClick={()=>setDrawerOpen(true)} style={{display:"none",flexDirection:"column",justifyContent:"center",gap:5,width:36,height:36,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7}} aria-label="Menu"><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/></button>
         </div>
       </header>
@@ -478,7 +479,7 @@ export default function NutriGuide() {
         <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,height:"calc(100vh - 57px)",overflowY:"auto"}}><NavItems/></div>
 
         {/* Content */}
-        <div style={{flex:1,padding:28,overflowY:"auto",height:"calc(100vh - 57px)",background:t.contBg}}>
+        <div ref={contentRef} style={{flex:1,padding:28,overflowY:"auto",height:"calc(100vh - 57px)",background:t.contBg}}>
           <div style={{marginBottom:28}}>
             <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Your Personalized Nutrition Guidance</div>
             <div style={{fontSize:".8rem",color:"#777",lineHeight:1.5,display:"flex",flexWrap:"wrap",alignItems:"baseline",gap:4}}>
