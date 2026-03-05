@@ -6,7 +6,7 @@ export const APPS = [
   {
     id: 'nutri-guide',
     title: 'NutriGuide',
-    description: 'Condition-centered nutrition guidance for adults 50+ managing chronic conditions with AI-powered insights.',
+    description: 'AI-powered personalized nutrition guidance for adults 50+ managing chronic conditions. Explore how your conditions are connected, key nutrients, food strategies, and get advice tailored to your health profile.',
     category: 'guide',
     path: '/guide/nutri-guide',
     accent: '#4a9e8e',
@@ -15,7 +15,7 @@ export const APPS = [
   {
     id: 'nutrient-explorer',
     title: 'Nutrient Explorer',
-    description: 'Interactive database of 32 nutrients across vitamins, minerals, macronutrients, and phytonutrients.',
+    description: 'Interactive nutrient database for adults. Browse essential nutrients with food sources, daily targets by age and sex, and an AI expert for personalized insights.',
     category: 'explorer',
     path: '/explorer/nutrient-explorer',
     accent: '#6a8eaa',

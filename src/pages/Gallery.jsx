@@ -31,7 +31,7 @@ export default function Gallery() {
         )}
 
         {/* Footer */}
-        <div style={{ textAlign: "center", padding: "24px 0 8px", fontSize: ".78rem", color: "#999" }}>Powered by Grandma ❤️</div>
+        <div style={{ textAlign: "center", padding: "24px 0 8px", fontSize: ".78rem", color: "#999" }}>Health & Wellness Innovations</div>
       </div>
     </div>
   );
