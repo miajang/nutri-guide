@@ -173,6 +173,8 @@ export default function NutrientExplorer() {
 
   const t = themes[theme];
 
+  useEffect(() => { document.title = "Nutrient Explorer"; }, []);
+
   useEffect(() => {
     const ck = () => setIsMobile(window.innerWidth <= 820);
     ck(); window.addEventListener("resize", ck);
@@ -218,8 +220,8 @@ export default function NutrientExplorer() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
             <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
-            <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>
-            <span style={{ fontSize: "1.15rem", fontWeight: 500, color: "#888" }}>Explorer</span></div>
+            <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}
+            <span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
           </div>
           <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, minWidth: 0, paddingLeft: 14 }}>
             <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "7px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
