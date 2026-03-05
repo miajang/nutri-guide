@@ -291,7 +291,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
 
   if(!isOpen) return null;
   return (
-    <div style={{position:"fixed",bottom:0,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderTopLeftRadius:16,boxShadow:"-4px -4px 24px rgba(0,0,0,.15)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
+    <div style={{position:"fixed",bottom:0,right:0,width:390,maxWidth:"100vw",height:"min(380px,65vh)",background:"#fff",borderTopLeftRadius:16,boxShadow:"-4px -4px 24px rgba(0,0,0,.15)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
       <div style={{padding:"14px 18px",background:t.lt,borderBottom:`1px solid ${t.mid}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
         <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
@@ -301,7 +301,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:"#f0f0f0",border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#555",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:"#f8f8f8",border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
@@ -489,7 +489,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Connections */}
-          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:36,scrollMarginTop:70}}>
+          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:36,scrollMarginTop:20}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="connection" color={t.pri}/> How Your Conditions Are Linked</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Many chronic conditions share the same underlying biological processes. Understanding these connections explains why improving one area of your nutrition can benefit multiple conditions at once.</p>
             {selConds.map(c=>(
@@ -526,7 +526,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Nutrients */}
-          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
+          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions — most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
             {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
@@ -534,7 +534,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Foods to Limit */}
-          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
+          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited — frequency and portion size matter most.</p>
             {relF.length>0?(
@@ -549,7 +549,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Supplements */}
-          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:70,paddingTop:28}}>
+          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:20,paddingTop:12}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only — not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
             {suppAll.length>0?(
