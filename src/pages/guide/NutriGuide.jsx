@@ -301,7 +301,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.badge,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:t.badgeTxt,cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.mid,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#fff",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
@@ -365,7 +365,7 @@ export default function NutriGuide() {
   const suppAll=relN.filter(n=>n.supp);
 
   const contentRef=useRef(null);
-  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){container.scrollTo({top:el.offsetTop-container.offsetTop-16,behavior:"smooth"});}};
+  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];if(el){el.scrollIntoView({behavior:"smooth",block:"start"});}};
 
   useEffect(()=>{
     if(screen!=="guidance")return;
