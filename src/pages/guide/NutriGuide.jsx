@@ -301,7 +301,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.badge,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
