@@ -1,27 +1,36 @@
 # NutriGuide — Claude Code Context
 
+## Workflow Rules
+- Never ask for permission or confirmation. Proceed with all fixes, builds, and iterations automatically.
+- After successful build, push to git.
+
 ## Project Overview
-Condition-based nutrition guidance app for adults 50+. Explores 15 health conditions, their biological connections to aging, shared metabolic pathways, and nutrition strategies. Focused on the obesity-to-cardiovascular disease prevention cascade.
+Nutrition Hub — Gallery-based app combining NutriGuide (condition-based nutrition guidance for adults 50+) and Nutrient Explorer (32-nutrient interactive database). Uses react-router-dom for routing between Gallery landing page and two app pages.
 
 ## Architecture
-Single-file React app — all logic in `src/App.jsx` (560 lines).
+Gallery architecture with routing:
+- `src/App.jsx` — Router with 3 routes
+- `src/pages/Gallery.jsx` — Landing page with 2 app cards
+- `src/pages/guide/NutriGuide.jsx` — Condition-based guidance (560 lines, 15 conditions, 14 nutrients, AI chat)
+- `src/pages/explorer/NutrientExplorer.jsx` — Nutrient database (307 lines, 32 nutrients, food filters)
+- `src/data/views.js` — App registry
+- `src/components/` — AppCard, BackToGallery shared components
 
 ### Key Data Structures
 - `catLabels` — 8 condition categories: Metabolic Risk, Cardiometabolic, Pulmonary, Cross-Cutting, Musculoskeletal, Sensory, Sleep, Mental Health
 - `conditions` array — 15 conditions, each with: id, name, cat, icon (emoji), pathways, connection (2 paragraphs explaining mechanism)
-- Conditions include: Obesity, Prediabetes, Type 2 Diabetes, High Blood Pressure, High Cholesterol, Metabolic Syndrome, Heart Disease, COPD, Chronic Kidney Disease, Chronic Inflammation, Osteoporosis, Arthritis, Age-Related Eye Disease, Sleep Disorders, Depression/Anxiety
+- `nutrients` array (NutriGuide) — 14 nutrients with RDA, food sources, supplement guidance
+- `nutrients` array (Explorer) — 32 nutrients across Vitamins, Minerals, Macronutrients, Phytonutrients
 
-### Features
-- Category-based condition browsing
-- Condition detail views with biological pathway explanations
-- Shared pathway visualization across conditions
-- Connection narratives (what it is + aging mechanisms)
-- Nutrition strategy recommendations
+### Routes
+- `/` — Gallery
+- `/guide/nutri-guide` — NutriGuide
+- `/explorer/nutrient-explorer` — Nutrient Explorer
 
 ## Tech Stack
-- React + Vite + Tailwind
-- No external libraries — all data inline
-- No routing — single-page with state-driven views
+- React 18 + Vite + Tailwind + react-router-dom
+- No external data libraries — all data inline
+- BrowserRouter in main.jsx
 
 ## Design Standards
 - Muted, desaturated colors

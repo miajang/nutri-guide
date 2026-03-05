@@ -442,23 +442,25 @@ export default function NutriGuide() {
       <style>{`@keyframes spin{to{transform:rotate(360deg)}} @media(max-width:768px){.ngNavD{display:none!important}.ngHam{display:flex!important}}`}</style>
       <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
         <div><div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div><div style={{fontSize:"1.2rem",fontWeight:800,color:t.pri}}>NutriGuide <span style={{color:"#777",fontWeight:400,fontSize:"1rem"}}>for Chronic Conditions</span></div><div style={{fontSize:".75rem",color:"#777",marginTop:2}}>Evidence-based, personalized nutrition guidance</div></div>
-        <div style={{display:"flex",alignItems:"center",gap:2}}>
-          <button onClick={()=>setScreen("select")} title="Back" style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><path d="M7 12l10-8v16z"/></svg>
-          </button>
-          <button onClick={()=>window.print()} title="Print" style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-          </button>
-          <div style={{position:"relative"}}>
-            <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:t.pri,display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:t.pri,fill:"none",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:4}}>
+          <div style={{display:"flex",alignItems:"center",gap:2}}>
+            <button onClick={()=>setScreen("select")} title="Back" style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><path d="M7 12l10-8v16z"/></svg>
             </button>
-            <SettingsPopover/>
+            <button onClick={()=>window.print()} title="Print" style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            </button>
+            <div style={{position:"relative"}}>
+              <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:36,height:36,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:t.pri,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:t.pri,fill:"none",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </button>
+              <SettingsPopover/>
+            </div>
+            <button className="ngHam" onClick={()=>setDrawerOpen(true)} style={{display:"none",flexDirection:"column",justifyContent:"center",gap:5,width:36,height:36,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7}} aria-label="Menu"><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/></button>
           </div>
-          <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.pri,fontSize:".8rem",fontWeight:600,cursor:"pointer",marginLeft:4}}>
+          <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.pri,fontSize:".8rem",fontWeight:600,cursor:"pointer"}}>
             <NavIcon type="chat" color={t.pri}/> Ask Expert
           </span>
-          <button className="ngHam" onClick={()=>setDrawerOpen(true)} style={{display:"none",flexDirection:"column",justifyContent:"center",gap:5,width:36,height:36,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7}} aria-label="Menu"><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/></button>
         </div>
       </header>
 
