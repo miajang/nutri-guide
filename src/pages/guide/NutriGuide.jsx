@@ -201,7 +201,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
           <div style={{fontSize:".95rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</div>
           <div style={{fontSize:".82rem",color:"#666",lineHeight:1.55,flex:1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.simple}</div>
           <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10}}>
-            {rel.slice(0,3).map(c=><span key={c.id} style={{fontSize:".68rem",background:"#f0f0f0",color:"#666",borderRadius:6,padding:"2px 7px",fontWeight:500}}>{c.icon} {c.name}</span>)}
+            {rel.slice(0,3).map(c=><span key={c.id} style={{fontSize:".68rem",background:"#f7f7f7",color:"#666",borderRadius:6,padding:"2px 7px",fontWeight:500}}>{c.icon} {c.name}</span>)}
             {rel.length>3&&<span style={{fontSize:".68rem",color:"#999",padding:"2px 4px"}}>+{rel.length-3}</span>}
           </div>
         </div>
@@ -509,7 +509,7 @@ export default function NutriGuide() {
                       Shared Biological Pathways
                     </div>
                     <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>Your conditions share key biological pathways. Improving them through nutrition benefits all your health concerns.</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:"#f0f0f0",color:"#666",borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:"#f7f7f7",color:"#666",borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
                   </div>
                   <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,whiteSpace:"nowrap"}}>{pathOpen?"Show less \u25B2":"Learn more \u25BC"}</div>
                 </div>
@@ -544,7 +544,7 @@ export default function NutriGuide() {
                 {relF.map((f,i)=><div key={i} style={{background:"#fff",borderRadius:14,padding:"18px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0"}}>
                   <div style={{fontSize:".88rem",fontWeight:600,color:"#333",marginBottom:4}}>{f.food}</div>
                   <div style={{fontSize:".82rem",color:"#999",marginBottom:10,lineHeight:1.5}}>{f.reason}</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#f0f0f0",color:"#666",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#f7f7f7",color:"#666",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
                 </div>)}
               </div>
             ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>No specific foods to limit identified.</div>}
