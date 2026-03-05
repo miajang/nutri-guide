@@ -216,7 +216,7 @@ export default function NutrientExplorer() {
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
-      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", position: "sticky", top: 0, zIndex: 100, padding: "10px 20px" }}>
+      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", position: "sticky", top: 0, zIndex: 100, padding: "14px 28px" }}>
         {/* Row 1: Logo + Settings */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ flexShrink: 0 }}>
@@ -248,7 +248,7 @@ export default function NutrientExplorer() {
           </div>
         </div>
         {/* Row 2: Tagline + Filter/Search + Ask Expert */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 6 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 2 }}>
           <span style={{ fontSize: ".74rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 190, minWidth: isMobile ? "auto" : 190 }}>AI-Powered Nutrient Facts</span>
           <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "7px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
             {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
