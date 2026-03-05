@@ -291,7 +291,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
 
   if(!isOpen) return null;
   return (
-    <div style={{position:"fixed",bottom:0,right:0,width:390,maxWidth:"100vw",height:"min(380px,65vh)",background:"#fff",borderTopLeftRadius:16,boxShadow:"-4px -4px 24px rgba(0,0,0,.15)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
+    <div style={{position:"fixed",top:57,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderBottomLeftRadius:16,boxShadow:"-4px 4px 24px rgba(0,0,0,.12)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
       <div style={{padding:"14px 18px",background:t.lt,borderBottom:`1px solid ${t.mid}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
         <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
@@ -301,7 +301,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:"#f8f8f8",border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.badge,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:t.badgeTxt,cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
@@ -365,7 +365,7 @@ export default function NutriGuide() {
   const suppAll=relN.filter(n=>n.supp);
 
   const contentRef=useRef(null);
-  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){container.scrollTo({top:el.offsetTop-container.offsetTop,behavior:"smooth"});}};
+  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){container.scrollTo({top:el.offsetTop-container.offsetTop-16,behavior:"smooth"});}};
 
   useEffect(()=>{
     if(screen!=="guidance")return;
