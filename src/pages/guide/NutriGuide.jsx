@@ -234,14 +234,15 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
           ))}
         </div>
         {n.foodAction&&<div style={{marginTop:16,fontSize:".84rem",color:"#555",fontWeight:500,lineHeight:1.55,paddingLeft:10,borderLeft:`3px solid ${t.pri}`,display:"inline-block"}}>{n.foodAction}</div>}
-        <div style={{marginTop:16}}>
+        {!dive&&<div style={{marginTop:16}}>
           <button onClick={doDive} style={{background:"transparent",color:t.pri,border:"none",borderRadius:8,padding:"8px 0",fontSize:".82rem",fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
-            <span style={{fontSize:".9rem"}}>{dive?"\u2715":"\uD83D\uDD0D"}</span> {dive?"Close Deep Dive":"AI Deep Dive \u2014 Personalized for Your Conditions"}
+            <span style={{fontSize:".9rem"}}>{"\uD83D\uDD0D"}</span> AI Deep Dive — Personalized for Your Conditions
           </button>
-        </div>
+        </div>}
         {loading&&<Spinner/>}
         {dive&&!loading&&(
-          <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75}}>
+          <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75,position:"relative"}}>
+            <button onClick={doDive} style={{position:"absolute",top:10,right:10,background:"transparent",border:"none",cursor:"pointer",fontSize:".78rem",color:"#999",fontWeight:500,display:"flex",alignItems:"center",gap:3}}>Close {"\u2715"}</button>
             <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
               AI-Generated Personalized Guidance
             </div>
