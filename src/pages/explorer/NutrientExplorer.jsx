@@ -45,7 +45,7 @@ const foodLabels = {all:"All Foods",Vegetables:"Vegetables",Fruits:"Fruits",Dair
 const themes = {
   sage:{primary:"#4a9e8e",light:"#f5faf8",mid:"#c2ddd6",dark:"#3a8a7a",badgeBg:"#eaf5f1",badgeText:"#3a7a6a",hoverBg:"#eef6f3",contentBg:"#f5f7f6"},
   slate:{primary:"#6a8eaa",light:"#f5f8fb",mid:"#bcd5ee",dark:"#5a7e9a",badgeBg:"#eaf0f6",badgeText:"#4a6e88",hoverBg:"#edf2f7",contentBg:"#f5f6f8"},
-  clay:{primary:"#b08860",light:"#faf8f5",mid:"#dcc8aa",dark:"#9a7850",badgeBg:"#f5efe6",badgeText:"#7a6040",hoverBg:"#f6f2ec",contentBg:"#f7f6f4"}
+  clay:{primary:"#c2805a",light:"#fdf8f5",mid:"#e6cbb8",dark:"#a8684a",badgeBg:"#f8efe8",badgeText:"#8a5a3a",hoverBg:"#f9f2ec",contentBg:"#f8f6f4"}
 };
 
 // ─── SETTINGS ICON SVG ───
@@ -116,7 +116,7 @@ export default function NutrientExplorer() {
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ flexShrink: 0, whiteSpace: "nowrap" }}>
             <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
-            <div><span style={{ fontSize: "1.95rem", fontWeight: 900, letterSpacing: "-.03em", color: "#0d7a5f" }}>Nutrient</span>
+            <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>
             <span style={{ fontSize: "1.15rem", fontWeight: 500, color: "#888" }}>Explorer</span></div>
           </div>
           <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, minWidth: 0, paddingLeft: 14 }}>
@@ -187,7 +187,7 @@ export default function NutrientExplorer() {
                 <option value="50-60">50-60</option><option value="61-70">61-70</option><option value="71+">71+</option>
               </select>
             </label>
-            <div style={{ marginLeft: "auto", fontSize: ".82rem", color: "#aaa" }}>Showing <span style={{ color: t.primary, fontWeight: 600 }}>{filtered.length}</span> of <span style={{ color: t.primary, fontWeight: 600 }}>{nutrients.length}</span></div>
+            {/* count removed */}
           </div>
           {/* Content */}
           <div style={{ padding: "20px 24px" }}>
@@ -224,7 +224,7 @@ function CatBtn({ label, active, color, onClick }) {
 // ─── NUTRIENT CARD ───
 function NutrientCard({ nutrient, theme, onClick }) {
   return (
-    <div onClick={onClick} style={{ background: "#fff", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,.05)", borderTop: `2.5px solid ${theme.primary}`, cursor: "pointer", display: "flex", flexDirection: "column", transition: "box-shadow .15s, transform .15s" }}
+    <div onClick={onClick} style={{ background: "#fff", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,.05)", cursor: "pointer", display: "flex", flexDirection: "column", transition: "box-shadow .15s, transform .15s" }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.08)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,.05)"; e.currentTarget.style.transform = "none"; }}>
       <div style={{ padding: "13px 15px", flex: 1, display: "flex", flexDirection: "column" }}>
@@ -236,7 +236,7 @@ function NutrientCard({ nutrient, theme, onClick }) {
       <div style={{ padding: "0 15px 12px", display: "flex", alignItems: "center", gap: 6 }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4, flex: 1, minWidth: 0 }}>
           {nutrient.foods.slice(0, 3).map((f, i) => (
-            <span key={i} style={{ background: theme.badgeBg, color: theme.badgeText, borderRadius: 16, padding: "2px 8px", fontSize: ".7rem", fontWeight: 500, whiteSpace: "nowrap" }}>{f.n}</span>
+            <span key={i} style={{ background: "#f7f7f7", color: "#666", borderRadius: 16, padding: "2px 8px", fontSize: ".7rem", fontWeight: 500, whiteSpace: "nowrap" }}>{f.n}</span>
           ))}
         </div>
       </div>
@@ -272,7 +272,7 @@ function NutrientModal({ nutrient, sex, age, theme, onClose }) {
 
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.3)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ background: "#fff", borderRadius: 14, maxWidth: 620, width: "100%", maxHeight: "88vh", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,.18)", borderTop: `4px solid ${theme.primary}` }}>
+      <div style={{ background: "#fff", borderRadius: 14, maxWidth: 620, width: "100%", maxHeight: "88vh", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,.18)", }}>
         <div style={{ padding: "20px 24px 14px", borderBottom: "1px solid #dde2e0", position: "sticky", top: 0, background: "#fff", zIndex: 1 }}>
           <div style={{ position: "absolute", right: 18, top: 18, display: "flex", alignItems: "center", gap: 6 }}>
             <button onClick={onClose} style={{ background: "#f5f7f6", border: "1px solid #e4e8e6", borderRadius: "50%", width: 30, height: 30, cursor: "pointer", fontSize: ".95rem", color: "#888", display: "flex", alignItems: "center", justifyContent: "center" }}>{"\u2715"}</button>
