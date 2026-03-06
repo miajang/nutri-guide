@@ -222,6 +222,7 @@ export default function NutrientExplorer() {
           <div>
             <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
             <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
+            <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 1 }}>AI-Powered Nutrient Facts</div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
             <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
@@ -246,9 +247,8 @@ export default function NutrientExplorer() {
             )}
           </div>
         </div>
-        {/* Row 2: Tagline + Search + Ask Expert */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 2 }}>
-          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 180, minWidth: isMobile ? "auto" : 180 }}>AI-Powered Nutrient Facts</span>
+        {/* Row 2: Search + Ask Expert */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4, paddingLeft: isMobile ? 0 : 190 }}>
           {!isMobile && (
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ flex: 1, maxWidth: 280, padding: "6px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           )}
