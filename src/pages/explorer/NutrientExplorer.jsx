@@ -223,7 +223,7 @@ export default function NutrientExplorer() {
           <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 2 }}>AI-Powered Nutrient Facts</div>
         </div>
         {!isMobile && (
-          <div style={{ marginLeft: 14, width: 320, flexShrink: 0 }}>
+          <div style={{ marginLeft: 20, width: 320, flexShrink: 0, marginBottom: -2 }}>
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           </div>
         )}
