@@ -216,14 +216,14 @@ export default function NutrientExplorer() {
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
-      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "14px 28px", display: "flex", alignItems: "center", position: "sticky", top: 0, zIndex: 100, flexWrap: isMobile ? "wrap" : "nowrap" }}>
+      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "14px 28px", display: "flex", alignItems: "flex-end", position: "sticky", top: 0, zIndex: 100, flexWrap: isMobile ? "wrap" : "nowrap" }}>
         <div style={{ flexShrink: 0 }}>
           <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
           <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
           <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 2 }}>AI-Powered Nutrient Facts</div>
         </div>
         {!isMobile && (
-          <div style={{ marginLeft: 30, width: 320, flexShrink: 0 }}>
+          <div style={{ marginLeft: 14, width: 320, flexShrink: 0 }}>
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           </div>
         )}
