@@ -216,48 +216,42 @@ export default function NutrientExplorer() {
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
-      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", position: "sticky", top: 0, zIndex: 100, padding: "16px 28px 10px" }}>
-        {/* Row 1: Logo + Gear */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
-            <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
-            <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 1 }}>AI-Powered Nutrient Facts</div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => setSettingsOpen(!settingsOpen)} style={{ width: 34, height: 34, borderRadius: 8, background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: t.primary }}><GearIcon /></button>
-              {settingsOpen && (
-                <div style={{ position: "absolute", right: 0, top: 40, background: "#fff", border: "1px solid #e4e8e6", borderRadius: 10, padding: "12px 14px", boxShadow: "0 6px 24px rgba(0,0,0,.1)", whiteSpace: "nowrap", zIndex: 200 }}>
-                  <div style={{ fontSize: ".68rem", color: "#aaa", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 8 }}>Theme Color</div>
-                  <div style={{ display: "flex", gap: 12 }}>
-                    {Object.entries(themes).map(([k, v]) => (
-                      <div key={k} onClick={() => { setTheme(k); setSettingsOpen(false); }} style={{ width: 26, height: 26, borderRadius: "50%", background: v.primary, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transform: theme === k ? "scale(1.15)" : "none", transition: "transform .15s" }}>
-                        {theme === k && <span style={{ color: "#fff", fontSize: ".65rem", fontWeight: 800 }}>{"\u2713"}</span>}
-                      </div>
-                    ))}
-                  </div>
+      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "16px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100 }}>
+        <div>
+          <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
+          <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
+          <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 1 }}>AI-Powered Nutrient Facts</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {!isMobile && (
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: 240, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+          )}
+          <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setSettingsOpen(!settingsOpen)} style={{ width: 34, height: 34, borderRadius: 8, background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: t.primary }}><GearIcon /></button>
+            {settingsOpen && (
+              <div style={{ position: "absolute", right: 0, top: 40, background: "#fff", border: "1px solid #e4e8e6", borderRadius: 10, padding: "12px 14px", boxShadow: "0 6px 24px rgba(0,0,0,.1)", whiteSpace: "nowrap", zIndex: 200 }}>
+                <div style={{ fontSize: ".68rem", color: "#aaa", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 8 }}>Theme Color</div>
+                <div style={{ display: "flex", gap: 12 }}>
+                  {Object.entries(themes).map(([k, v]) => (
+                    <div key={k} onClick={() => { setTheme(k); setSettingsOpen(false); }} style={{ width: 26, height: 26, borderRadius: "50%", background: v.primary, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transform: theme === k ? "scale(1.15)" : "none", transition: "transform .15s" }}>
+                      {theme === k && <span style={{ color: "#fff", fontSize: ".65rem", fontWeight: 800 }}>{"\u2713"}</span>}
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
-            {isMobile && (
-              <button onClick={() => setDrawerOpen(true)} style={{ display: "flex", flexDirection: "column", gap: 4, width: 34, height: 34, background: "#f5f8f7", border: "1.5px solid #e0e8e5", borderRadius: 8, cursor: "pointer", padding: 7, alignItems: "stretch", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} />
-              </button>
+              </div>
             )}
           </div>
-        </div>
-        {/* Row 2: Search + Ask Expert */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4, paddingLeft: isMobile ? 0 : 190 }}>
-          {!isMobile && (
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ flex: 1, maxWidth: 280, padding: "6px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+          {isMobile && (
+            <button onClick={() => setDrawerOpen(true)} style={{ display: "flex", flexDirection: "column", gap: 4, width: 34, height: 34, background: "#f5f8f7", border: "1.5px solid #e0e8e5", borderRadius: 8, cursor: "pointer", padding: 7, alignItems: "stretch", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} />
+            </button>
           )}
-          <span onClick={() => setChatOpen(true)} style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
+          <span onClick={() => setChatOpen(true)} style={{ display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
             <NavIcon type="chat" color={t.primary} /> Ask Expert
           </span>
         </div>
         {isMobile && (
-          <div style={{ marginTop: 8 }}>
+          <div style={{ width: "100%", marginTop: 8 }}>
             <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           </div>
         )}
