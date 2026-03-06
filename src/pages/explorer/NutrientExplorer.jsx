@@ -220,7 +220,7 @@ export default function NutrientExplorer() {
         {/* Row 1: Logo + Gear */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
-            <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
+            <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:2}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
             <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -246,16 +246,13 @@ export default function NutrientExplorer() {
             )}
           </div>
         </div>
-        {/* Row 2: Tagline + Filter + Search + Ask Expert */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4 }}>
-          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 162, minWidth: isMobile ? "auto" : 162 }}>AI-Powered Nutrient Facts</span>
-          <select value={foodFilter} onChange={(e) => setFoodFilter(e.target.value)} style={{ padding: "6px 10px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".83rem", color: "#555", outline: "none", background: "#fff", minWidth: 120 }}>
-            {foodTypes.map((ft) => <option key={ft} value={ft}>{foodLabels[ft]}</option>)}
-          </select>
+        {/* Row 2: Tagline + Search + Ask Expert */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 2 }}>
+          <span style={{ fontSize: ".75rem", color: "#aaa", flexShrink: 0, width: isMobile ? "auto" : 180, minWidth: isMobile ? "auto" : 180 }}>AI-Powered Nutrient Facts</span>
           {!isMobile && (
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ flex: 1, maxWidth: 260, padding: "6px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ flex: 1, maxWidth: 280, padding: "6px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
           )}
-          <span onClick={() => setChatOpen(true)} style={{ display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
+          <span onClick={() => setChatOpen(true)} style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer", flexShrink: 0 }}>
             <NavIcon type="chat" color={t.primary} /> Ask Expert
           </span>
         </div>
