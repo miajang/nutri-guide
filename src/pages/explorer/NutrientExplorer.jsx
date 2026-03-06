@@ -216,7 +216,10 @@ export default function NutrientExplorer() {
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
-      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "14px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100 }}>
+      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "14px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 100, position: "relative" }}>
+        {!isMobile && (
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ position: "absolute", left: 190, top: "50%", transform: "translateY(-50%)", width: 280, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+        )}
         <div>
           <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
           <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
@@ -224,9 +227,6 @@ export default function NutrientExplorer() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-            {!isMobile && (
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: 240, padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box", marginRight: 8 }} />
-            )}
             <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
               <button onClick={() => setSettingsOpen(!settingsOpen)} style={{ width: 36, height: 36, borderRadius: 8, background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: t.primary }}><GearIcon /></button>
               {settingsOpen && (
