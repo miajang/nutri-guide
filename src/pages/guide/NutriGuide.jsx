@@ -430,7 +430,8 @@ export default function NutriGuide() {
     return (
       <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#F9FAFB",minHeight:"100vh",color:"#555"}}>
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",position:"sticky",top:0,zIndex:100}}>
+          <div style={{marginBottom:-6}}><BackToGallery/></div>
           <div style={{display:"flex",alignItems:"center",gap:7}}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}>
               <circle cx="24" cy="24" r="21" fill="none" stroke="#2E7AD9" strokeWidth="3.5"/>
@@ -444,7 +445,6 @@ export default function NutriGuide() {
           </div>
         </header>
         <div style={{padding:"32px 24px",maxWidth:940,margin:"0 auto"}}>
-          <BackToGallery/>
           <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4,marginTop:16}}>Welcome to NutriGuide</div>
           <div style={{color:"#777",fontSize:".92rem",marginBottom:28}}>Select your profile and health concerns to receive personalized, food-first nutrition guidance tailored to your conditions.</div>
           <div style={{background:"#fff",borderRadius:14,padding:"20px 22px",marginBottom:24,boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
@@ -566,7 +566,7 @@ export default function NutriGuide() {
 
       {/* Header */}
       <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"12px 20px",position:"sticky",top:0,zIndex:100}}>
-        <div style={{marginBottom:6}}><BackToGallery/></div>
+        <div style={{marginBottom:-6}}><BackToGallery/></div>
         <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
