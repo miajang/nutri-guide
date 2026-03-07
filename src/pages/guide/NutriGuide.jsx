@@ -507,7 +507,7 @@ export default function NutriGuide() {
         <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,height:"calc(100vh - 57px)",overflowY:"auto"}}><NavItems/></div>
 
         {/* Content */}
-        <div ref={contentRef} style={{flex:1,padding:"28px 28px 60vh 28px",overflowY:"auto",height:"calc(100vh - 57px)",background:t.contBg}}>
+        <div ref={contentRef} style={{flex:1,padding:"28px 28px 60vh 28px",overflowY:"auto",height:"calc(100vh - 57px)",background:"#f2f4f8"}}>
           <div style={{marginBottom:28}}>
             <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Your Personalized Nutrition Guidance</div>
             <div style={{fontSize:".8rem",color:"#777",lineHeight:1.5,display:"flex",flexWrap:"wrap",alignItems:"baseline",gap:4}}>
