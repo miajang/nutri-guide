@@ -297,7 +297,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients}) => {
       <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
       <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
         <div style={{padding:"14px 18px",background:t.lt,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
-          <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask NutriGuide</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
+          <div><div style={{fontWeight:500,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#777"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
           <button onClick={onClose} style={{background:"#fff",border:`1px solid ${t.mid}`,color:"#777",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
         </div>
         <div style={{flex:1,overflowY:"auto",padding:16}}>
@@ -305,7 +305,7 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients}) => {
             <div>
               <p style={{fontSize:".85rem",color:"#777",marginBottom:12,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
               <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:t.pri,cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+                {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#555",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
               </div>
             </div>
           )}
@@ -550,7 +550,7 @@ export default function NutriGuide() {
   const NavItems = () => (
     <>
       {navSections.map(s=>(
-        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?600:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
+        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?500:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
           <span style={{width:18,height:18,display:"flex",alignItems:"center",justifyContent:"center"}}><NavIcon type={s.id} color={activeNav===s.id?t.pri:"#666"}/></span>
           {s.labelLong}
         </div>
