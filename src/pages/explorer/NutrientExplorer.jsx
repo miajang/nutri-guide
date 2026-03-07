@@ -43,9 +43,9 @@ const foodTypes = ["all","Vegetables","Fruits","Dairy","Meat","Seafood","Legumes
 const foodLabels = {all:"All Foods",Vegetables:"Vegetables",Fruits:"Fruits",Dairy:"Dairy",Meat:"Meat & Poultry",Seafood:"Seafood",Legumes:"Legumes",Grains:"Grains & Seeds",Nuts:"Nuts",Eggs:"Eggs",Oils:"Oils & Fats",Other:"Other"};
 
 const themes = {
-  sage:{primary:"#4a9e8e",light:"#f5faf8",mid:"#c2ddd6",dark:"#3a8a7a",badgeBg:"#eaf5f1",badgeText:"#3a7a6a",hoverBg:"#eef6f3",contentBg:"#f5f7f6"},
-  slate:{primary:"#6a8eaa",light:"#f5f8fb",mid:"#bcd5ee",dark:"#5a7e9a",badgeBg:"#eaf0f6",badgeText:"#4a6e88",hoverBg:"#edf2f7",contentBg:"#f5f6f8"},
-  clay:{primary:"#c2805a",light:"#fdf8f5",mid:"#e6cbb8",dark:"#a8684a",badgeBg:"#f8efe8",badgeText:"#8a5a3a",hoverBg:"#f9f2ec",contentBg:"#f8f6f4"}
+  sage:{primary:"#4a9e8e",light:"#f5faf8",mid:"#c2ddd6",dark:"#3a8a7a",badgeBg:"#eaf5f1",badgeText:"#3a7a6a",hoverBg:"#eef6f3",contentBg:"#f2f4f8"},
+  slate:{primary:"#6a8eaa",light:"#f5f8fb",mid:"#bcd5ee",dark:"#5a7e9a",badgeBg:"#eaf0f6",badgeText:"#4a6e88",hoverBg:"#edf2f7",contentBg:"#f2f4f8"},
+  clay:{primary:"#c2805a",light:"#fdf8f5",mid:"#e6cbb8",dark:"#a8684a",badgeBg:"#f8efe8",badgeText:"#8a5a3a",hoverBg:"#f9f2ec",contentBg:"#f2f4f8"}
 };
 
 // ─── SETTINGS ICON SVG ───
@@ -216,28 +216,36 @@ export default function NutrientExplorer() {
     <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
       <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
       {/* ── HEADER ── */}
-      <header style={{ background: "#fff", borderBottom: "1px solid #e8eeec", padding: "14px 28px", display: "flex", alignItems: "flex-end", position: "sticky", top: 0, zIndex: 100, flexWrap: isMobile ? "wrap" : "nowrap" }}>
-        <div style={{ flexShrink: 0 }}>
-          <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
-          <div><span style={{ fontSize: "1.15rem", fontWeight: 400, letterSpacing: "-.01em", color: "#0d7a5f" }}>Nutrient</span>{" "}<span style={{ fontSize: "1.15rem", fontWeight: 400, color: "#888" }}>Explorer</span></div>
-          <div style={{ fontSize: ".75rem", color: "#aaa", marginTop: 2 }}>AI-Powered Nutrient Facts</div>
-        </div>
-        {!isMobile && (
-          <div style={{ marginLeft: 20, width: 320, flexShrink: 0, marginBottom: -2 }}>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+      <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",position:"sticky",top:0,zIndex:100,padding:"12px 20px"}}>
+        <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
+        <div style={{display:"grid",gridTemplateColumns:isMobile?"auto 1fr":"auto 1fr auto",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
+          {/* Logo cell - merged rows */}
+          <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
+            <div style={{display:"flex",alignItems:"center",gap:7}}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.primary}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+              <div>
+                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:t.primary}}>Nutrient</span><span style={{fontWeight:300,color:t.primary}}>Explorer</span></div>
+                <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Your Nutrition Library</div>
+              </div>
+            </div>
           </div>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, marginLeft: "auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <div className="settings-wrap" style={{ position: "relative" }} onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => setSettingsOpen(!settingsOpen)} style={{ width: 36, height: 36, borderRadius: 8, background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: t.primary }}><GearIcon /></button>
+          {/* Search cell - merged rows (desktop only) */}
+          {!isMobile && (
+            <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end",paddingLeft:10}}>
+              <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:"100%",maxWidth:360,padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
+            </div>
+          )}
+          {/* Right column row 1 - settings */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:2}}>
+            <div className="settings-wrap" style={{position:"relative"}} onClick={(e)=>e.stopPropagation()}>
+              <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:t.primary}}><GearIcon/></button>
               {settingsOpen && (
-                <div style={{ position: "absolute", right: 0, top: 40, background: "#fff", border: "1px solid #e4e8e6", borderRadius: 10, padding: "12px 14px", boxShadow: "0 6px 24px rgba(0,0,0,.1)", whiteSpace: "nowrap", zIndex: 200 }}>
-                  <div style={{ fontSize: ".68rem", color: "#aaa", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".07em", marginBottom: 8 }}>Theme Color</div>
-                  <div style={{ display: "flex", gap: 12 }}>
-                    {Object.entries(themes).map(([k, v]) => (
-                      <div key={k} onClick={() => { setTheme(k); setSettingsOpen(false); }} style={{ width: 26, height: 26, borderRadius: "50%", background: v.primary, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", transform: theme === k ? "scale(1.15)" : "none", transition: "transform .15s" }}>
-                        {theme === k && <span style={{ color: "#fff", fontSize: ".65rem", fontWeight: 800 }}>{"\u2713"}</span>}
+                <div style={{position:"absolute",right:0,top:40,background:"#fff",border:"1px solid #e4e8e6",borderRadius:10,padding:"12px 14px",boxShadow:"0 6px 24px rgba(0,0,0,.1)",whiteSpace:"nowrap",zIndex:200}}>
+                  <div style={{fontSize:".68rem",color:"#aaa",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",marginBottom:8}}>Theme Color</div>
+                  <div style={{display:"flex",gap:12}}>
+                    {Object.entries(themes).map(([k,v])=>(
+                      <div key={k} onClick={()=>{setTheme(k);setSettingsOpen(false);}} style={{width:26,height:26,borderRadius:"50%",background:v.primary,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transform:theme===k?"scale(1.15)":"none",transition:"transform .15s"}}>
+                        {theme===k&&<span style={{color:"#fff",fontSize:".65rem",fontWeight:800}}>{"\u2713"}</span>}
                       </div>
                     ))}
                   </div>
@@ -245,18 +253,21 @@ export default function NutrientExplorer() {
               )}
             </div>
             {isMobile && (
-              <button onClick={() => setDrawerOpen(true)} style={{ display: "flex", flexDirection: "column", gap: 4, width: 34, height: 34, background: "#f5f8f7", border: "1.5px solid #e0e8e5", borderRadius: 8, cursor: "pointer", padding: 7, alignItems: "stretch", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} /><span style={{ height: 2, background: "#888", borderRadius: 2 }} />
+              <button onClick={()=>setDrawerOpen(true)} style={{display:"flex",flexDirection:"column",gap:4,width:34,height:34,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7,alignItems:"stretch",justifyContent:"center",flexShrink:0}}>
+                <span style={{height:2,background:"#888",borderRadius:2}}/><span style={{height:2,background:"#888",borderRadius:2}}/><span style={{height:2,background:"#888",borderRadius:2}}/>
               </button>
             )}
           </div>
-          <span onClick={() => setChatOpen(true)} style={{ display: "flex", alignItems: "center", gap: 4, color: t.primary, fontSize: ".8rem", fontWeight: 600, cursor: "pointer" }}>
-            <NavIcon type="chat" color={t.primary} /> Ask Expert
-          </span>
+          {/* Right column row 2 - Ask Expert */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",paddingRight:8}}>
+            <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.primary,fontSize:".8rem",fontWeight:600,cursor:"pointer"}}>
+              <NavIcon type="chat" color={t.primary}/> Ask Expert
+            </span>
+          </div>
         </div>
         {isMobile && (
-          <div style={{ width: "100%", marginTop: 8 }}>
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search nutrients…" style={{ width: "100%", padding: "7px 14px", border: "1.5px solid #dce4e1", borderRadius: 8, fontSize: ".88rem", outline: "none", color: "#555", boxSizing: "border-box" }} />
+          <div style={{marginTop:8}}>
+            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:"100%",padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
           </div>
         )}
       </header>
@@ -295,19 +306,29 @@ export default function NutrientExplorer() {
           </div>
           {/* Content */}
           <div style={{ padding: "20px 24px" }}>
-            {filtered.length === 0 && <div style={{ background: "#fff", borderRadius: 10, padding: "48px 20px", fontSize: ".9rem", color: "#aaa", textAlign: "center", boxShadow: "0 1px 4px rgba(0,0,0,.05)" }}>No nutrients match your search or filters.</div>}
+            {filtered.length === 0 && <div style={{ background: "#fff", borderRadius: 12, padding: "48px 20px", fontSize: ".9rem", color: "#aaa", textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,.04)" }}>No nutrients match your search or filters.</div>}
             {catOrder.map((cat) => {
               const items = grouped[cat];
               if (!items || !items.length) return null;
               return (
-                <div key={cat} style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: ".74rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 8, color: t.primary }}>{catNames[cat]}</div>
+                <div key={cat} style={{marginBottom:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
+                  <div style={{ fontSize: ".74rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12, color: t.primary }}>{catNames[cat]}</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
                     {items.map((n) => <NutrientCard key={n.id} nutrient={n} theme={t} onClick={() => setModalNutrient(n)} />)}
                   </div>
                 </div>
               );
             })}
+          {/* Footer */}
+          <div style={{padding:"16px 0",marginTop:12,textAlign:"center"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.primary}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:t.primary}}>Nutrient</span><span style={{fontWeight:300,color:t.primary}}>Explorer</span></span>
+              <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
+              <span style={{fontSize:".68rem",color:"#aaa"}}>Your Nutrition Library</span>
+            </div>
+            <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
+          </div>
           </div>
         </main>
       </div>
@@ -331,9 +352,9 @@ function CatBtn({ label, active, color, onClick }) {
 // ─── NUTRIENT CARD ───
 function NutrientCard({ nutrient, theme, onClick }) {
   return (
-    <div onClick={onClick} style={{ background: "#fff", borderRadius: 10, overflow: "hidden", boxShadow: "0 1px 4px rgba(0,0,0,.05)", cursor: "pointer", display: "flex", flexDirection: "column", transition: "box-shadow .15s, transform .15s" }}
+    <div onClick={onClick} style={{ background: "#f8faf9", borderRadius: 10, overflow: "hidden", cursor: "pointer", display: "flex", flexDirection: "column", transition: "box-shadow .15s, transform .15s" }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.08)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,0,0,.05)"; e.currentTarget.style.transform = "none"; }}>
+      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; }}>
       <div style={{ padding: "13px 15px", flex: 1, display: "flex", flexDirection: "column" }}>
         <div style={{ fontSize: ".66rem", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, marginBottom: 2, color: "#aaa" }}>{nutrient.cat}</div>
         <div style={{ fontSize: ".92rem", fontWeight: 600, color: "#333", lineHeight: 1.3 }}>{nutrient.name}</div>

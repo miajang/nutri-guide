@@ -446,6 +446,15 @@ export default function NutriGuide() {
             );})}
           </div>
           <button disabled={!selected.size} onClick={()=>{setScreen("guidance");setOpenNuts(new Set());setPathOpen(false);setActiveNav("connection");setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
+          <div style={{padding:"16px 0",marginTop:32,textAlign:"center"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
+              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></span>
+              <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
+              <span style={{fontSize:".68rem",color:"#aaa"}}>Personalized Nutrition Guidance</span>
+            </div>
+            <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
+          </div>
         </div>
       </div>
     );
@@ -592,6 +601,17 @@ export default function NutriGuide() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{padding:"16px 0",textAlign:"center"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
+          <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></span>
+          <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
+          <span style={{fontSize:".68rem",color:"#aaa"}}>Personalized Nutrition Guidance</span>
+        </div>
+        <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
       </div>
 
       {/* Chat */}
