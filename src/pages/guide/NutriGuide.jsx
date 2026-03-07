@@ -409,7 +409,7 @@ export default function NutriGuide() {
           <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
             <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
               <div style={{display:"flex",alignItems:"center",gap:7}}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="10.5" fill="none" stroke="#0d7a5f" strokeWidth="2.4"/><path d="M18.5 29.5 L21.5 21.5 L29.5 18.5 L26.5 26.5 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="1.8" fill="#fff"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
                 <div>
                   <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></div>
                   <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
@@ -460,7 +460,7 @@ export default function NutriGuide() {
         <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="10.5" fill="none" stroke="#0d7a5f" strokeWidth="2.4"/><path d="M18.5 29.5 L21.5 21.5 L29.5 18.5 L26.5 26.5 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="1.8" fill="#fff"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
               <div>
                 <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></div>
                 <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
