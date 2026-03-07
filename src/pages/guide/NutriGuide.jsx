@@ -402,7 +402,7 @@ export default function NutriGuide() {
   /* ── SELECT SCREEN ── */
   if(screen==="select"){
     return (
-      <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#fff",minHeight:"100vh",color:"#555"}}>
+      <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#f2f4f8",minHeight:"100vh",color:"#555"}}>
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
         <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",position:"sticky",top:0,zIndex:100,padding:"12px 20px"}}>
           <div onClick={()=>nav('/')} style={{fontSize:".78rem",color:"#999",cursor:"pointer",fontWeight:500,marginBottom:4,display:"inline-flex",alignItems:"center",gap:3}}><span style={{fontSize:".7rem"}}>←</span> Back to Apps</div>
@@ -429,21 +429,27 @@ export default function NutriGuide() {
         <div style={{padding:"32px 24px",maxWidth:940,margin:"0 auto"}}>
           <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Welcome to NutriGuide</div>
           <div style={{color:"#777",fontSize:".92rem",marginBottom:28}}>Select your profile and health concerns to receive personalized, food-first nutrition guidance tailored to your conditions.</div>
-          <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Your Profile</div>
-          <div style={{display:"flex",gap:16,marginBottom:28,flexWrap:"wrap"}}>
-            <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Biological Sex</label><select value={sex} onChange={e=>setSex(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}><option value="female">Female</option><option value="male">Male</option></select></div>
-            <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Age Group</label><select value={age} onChange={e=>setAge(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}><option value="50-60">{"50\u201360 years"}</option><option value="61-70">{"61\u201370 years"}</option><option value="71+">71+ years</option></select></div>
+          {/* Your Profile wrapper */}
+          <div style={{background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)",marginBottom:20}}>
+            <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Your Profile</div>
+            <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
+              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Biological Sex</label><select value={sex} onChange={e=>setSex(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#f8faf9"}}><option value="female">Female</option><option value="male">Male</option></select></div>
+              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Age Group</label><select value={age} onChange={e=>setAge(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#f8faf9"}}><option value="50-60">{"50\u201360 years"}</option><option value="61-70">{"61\u201370 years"}</option><option value="71+">71+ years</option></select></div>
+            </div>
           </div>
-          <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Select Your Health Concerns <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:"#aaa"}}>(choose all that apply)</span></div>
-          <div style={{fontSize:".85rem",color:"#999",marginBottom:16}}>Selected: <span style={{color:t.pri,fontWeight:700}}>{selected.size}</span> conditions</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10,marginBottom:28}}>
-            {conditions.map(c=>{const isSel=selected.has(c.id);return(
-              <div key={c.id} onClick={()=>toggleCond(c.id)} style={{background:t.condBg,border:isSel?`1.5px solid ${t.mid}`:"1.5px solid transparent",borderRadius:12,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:10,boxShadow:isSel?"0 1px 4px rgba(0,0,0,.06)":"0 1px 3px rgba(0,0,0,.04)",transition:"all .15s"}}>
-                <span style={{fontSize:"1.2rem",width:26,textAlign:"center",flexShrink:0}}>{c.icon}</span>
-                <div style={{flex:1,minWidth:0}}><div style={{fontSize:".85rem",fontWeight:500,color:"#333",lineHeight:1.3}}>{c.name}</div><div style={{fontSize:".72rem",color:"#999",marginTop:2}}>{catLabels[c.cat]}</div></div>
-                <div style={{width:18,height:18,borderRadius:"50%",border:isSel?`2px solid ${t.pri}`:"2px solid #d0deda",background:isSel?t.pri:"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:".62rem",color:"#fff",transition:"all .15s"}}>{isSel?"\u2713":""}</div>
-              </div>
-            );})}
+          {/* Health Concerns wrapper */}
+          <div style={{background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)",marginBottom:28}}>
+            <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Select Your Health Concerns <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:"#aaa"}}>(choose all that apply)</span></div>
+            <div style={{fontSize:".85rem",color:"#999",marginBottom:16}}>Selected: <span style={{color:t.pri,fontWeight:700}}>{selected.size}</span> conditions</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
+              {conditions.map(c=>{const isSel=selected.has(c.id);return(
+                <div key={c.id} onClick={()=>toggleCond(c.id)} style={{background:"#f8faf9",border:isSel?`1.5px solid ${t.mid}`:"1.5px solid transparent",borderRadius:12,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:10,boxShadow:isSel?"0 1px 4px rgba(0,0,0,.06)":"none",transition:"all .15s"}}>
+                  <span style={{fontSize:"1.2rem",width:26,textAlign:"center",flexShrink:0}}>{c.icon}</span>
+                  <div style={{flex:1,minWidth:0}}><div style={{fontSize:".85rem",fontWeight:500,color:"#333",lineHeight:1.3}}>{c.name}</div><div style={{fontSize:".72rem",color:"#999",marginTop:2}}>{catLabels[c.cat]}</div></div>
+                  <div style={{width:18,height:18,borderRadius:"50%",border:isSel?`2px solid ${t.pri}`:"2px solid #d0deda",background:isSel?t.pri:"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:".62rem",color:"#fff",transition:"all .15s"}}>{isSel?"\u2713":""}</div>
+                </div>
+              );})}
+            </div>
           </div>
           <button disabled={!selected.size} onClick={()=>{setScreen("guidance");setOpenNuts(new Set());setPathOpen(false);setActiveNav("connection");setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
           <div style={{padding:"16px 0",marginTop:32,textAlign:"center"}}>
