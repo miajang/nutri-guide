@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import BackToGallery from "../../components/BackToGallery";
+
 
 /* == START: Category Labels ==
    Display names for condition categories
@@ -430,8 +430,7 @@ export default function NutriGuide() {
     return (
       <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#F9FAFB",minHeight:"100vh",color:"#555"}}>
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",position:"sticky",top:0,zIndex:100}}>
-          <div style={{marginBottom:-6}}><BackToGallery/></div>
+        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",display:"flex",alignItems:"center",position:"sticky",top:0,zIndex:100}}>
           <div style={{display:"flex",alignItems:"center",gap:7}}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}>
               <circle cx="24" cy="24" r="21" fill="none" stroke="#2E7AD9" strokeWidth="3.5"/>
@@ -566,7 +565,6 @@ export default function NutriGuide() {
 
       {/* Header */}
       <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"12px 20px",position:"sticky",top:0,zIndex:100}}>
-        <div style={{marginBottom:-6}}><BackToGallery/></div>
         <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
