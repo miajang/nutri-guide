@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import BackToGallery from "../../components/BackToGallery";
 
 /* == START: Category Labels ==
    Display names for condition categories
@@ -70,28 +70,38 @@ const nutrients=[
    Each: conds[], food, reason
    == END: Foods to Limit == */
 const foodsToLimit=[
-  {conds:["htn","cvd","ckd"],food:"High-sodium processed, packaged, and restaurant foods",reason:"Raises blood pressure and increases kidney workload.",examples:["Canned soups","Deli meats","Frozen dinners","Soy sauce","Pickles","Chips"]},
-  {conds:["chol","cvd","obesity","metabolic"],food:"Saturated fat\u2013heavy foods (processed meats, excess full-fat dairy, tropical oils)",reason:"Raises LDL and promotes vascular inflammation.",examples:["Bacon","Sausage","Coconut oil","Butter","Hot dogs","Palm oil"]},
-  {conds:["prediabetes","dm2","obesity","metabolic","ckd"],food:"Refined carbohydrates and high added sugars",reason:"Drive glucose spikes and promote insulin resistance.",examples:["White bread","Pastries","Soda","Candy","Fruit juice","White rice"]},
-  {conds:["inflam","arthritis","depression","metabolic"],food:"Ultra-processed foods and high omega-6 oils",reason:"Promote inflammation by displacing omega-3s.",examples:["Corn oil","Fast food","Margarine","Packaged snacks","Fried foods","Microwave popcorn"]},
-  {conds:["sleep"],food:"Caffeine after noon and alcohol before bed",reason:"Caffeine blocks adenosine; alcohol fragments sleep.",examples:["Coffee","Energy drinks","Dark chocolate","Wine","Beer","Green tea (late)"]},
-  {conds:["osteo"],food:"Excessive alcohol and high sodium",reason:"Increase calcium excretion and impair bone remodeling.",examples:["Cocktails","Salty snacks","Cured meats","Canned foods","Beer","Pretzels"]},
-  {conds:["copd"],food:"Very large, high-carbohydrate meals",reason:"Produce more CO\u2082, worsening breathing.",examples:["Large pasta servings","Bread baskets","Sugary drinks","Mashed potatoes","Pancake stacks"]},
-  {conds:["ckd"],food:"High-phosphorus processed foods",reason:"Damaged kidneys can\u2019t filter excess phosphorus.",examples:["Cola drinks","Processed cheese","Bran cereals","Canned beans","Organ meats","Chocolate"]}
+  {conds:["htn","cvd","ckd"],food:"High-sodium processed, packaged, and restaurant foods",reason:"Raises blood pressure and increases kidney workload."},
+  {conds:["chol","cvd","obesity","metabolic"],food:"Saturated fat\u2013heavy foods (processed meats, excess full-fat dairy, tropical oils)",reason:"Raises LDL and promotes vascular inflammation."},
+  {conds:["prediabetes","dm2","obesity","metabolic","ckd"],food:"Refined carbohydrates and high added sugars",reason:"Drive glucose spikes and promote insulin resistance."},
+  {conds:["inflam","arthritis","depression","metabolic"],food:"Ultra-processed foods and high omega-6 oils",reason:"Promote inflammation by displacing omega-3s."},
+  {conds:["sleep"],food:"Caffeine after noon and alcohol before bed",reason:"Caffeine blocks adenosine; alcohol fragments sleep."},
+  {conds:["osteo"],food:"Excessive alcohol and high sodium",reason:"Increase calcium excretion and impair bone remodeling."},
+  {conds:["copd"],food:"Very large, high-carbohydrate meals",reason:"Produce more CO\u2082, worsening breathing."},
+  {conds:["ckd"],food:"High-phosphorus processed foods",reason:"Damaged kidneys can\u2019t filter excess phosphorus."}
 ];
 
-/* == START: Theme Colors (3 themes) ==
-   green, blue, orange — edit pri/lt/mid/dk etc.
-   == END: Theme Colors == */
-const themes={
-  green:{pri:"#0d7a5f",lt:"#f5faf8",mid:"#b8d4ce",dk:"#0a6550",badge:"#e6f4f0",badgeTxt:"#0a6550",learn:"#6aab98",condBg:"#edf5f2",hover:"#eaf5f1",contBg:"#f4f7f6"},
-  blue:{pri:"#3b82c4",lt:"#f5f9fd",mid:"#bcd5ee",dk:"#2d6ba8",badge:"#eaf3fb",badgeTxt:"#2d6ba8",learn:"#7aadd9",condBg:"#eaf1f8",hover:"#e8f1f9",contBg:"#f4f6f8"},
-  orange:{pri:"#e07b2a",lt:"#fefaf6",mid:"#f0c89a",dk:"#c46818",badge:"#fdf1e4",badgeTxt:"#b85e14",learn:"#d4956a",condBg:"#f5efe8",hover:"#faf0e6",contBg:"#f7f6f4"}
+/* == START: HWI Brand Colors (permanent) ==
+   No theme switcher — fixed brand identity
+   == END: HWI Brand Colors == */
+const t = {
+  pri: "#2E7AD9",
+  teal: "#47ADC3",
+  orange: "#F79520",
+  lt: "#EAF2FB",
+  mid: "#ABCBF0",
+  dk: "#1a5ba0",
+  badge: "#D5E5F7",
+  badgeTxt: "#1a5ba0",
+  learn: "#5895E1",
+  condBg: "#F9FAFB",
+  hover: "#EAF2FB",
+  contBg: "#F9FAFB"
 };
+
 const mutualExclusions={prediabetes:"dm2",dm2:"prediabetes"};
 
 /* == START: SVG Nav Icons ==
-   connection, nutrients, limit, supplements, chat
+   connection, nutrients, limit, supplements, chat, settings
    == END: SVG Nav Icons == */
 const NavIcon = ({type, color}) => {
   const s = {width:16,height:16,stroke:color,fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};
@@ -100,6 +110,7 @@ const NavIcon = ({type, color}) => {
   if(type==="limit") return <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="9"/><line x1="5.7" y1="5.7" x2="18.3" y2="18.3"/></svg>;
   if(type==="supplements") return <svg viewBox="0 0 24 24" style={s}><rect x="6" y="2" width="12" height="20" rx="5"/><line x1="6" y1="12" x2="18" y2="12"/></svg>;
   if(type==="chat") return <svg viewBox="0 0 24 24" style={s}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+  if(type==="settings") return <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
   return null;
 };
 
@@ -156,12 +167,12 @@ RULES:
 async function callAI(sys, msg, history) {
   try {
     const messages = history ? [...history, {role:"user",content:msg}] : [{role:"user",content:msg}];
-    const r = await fetch("/api/chat", {
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
       method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({system:sys,messages})
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages})
     });
     const d = await r.json();
-    return d.text||"No response received.";
+    return d.content?.map(b=>b.text||"").join("\n")||"No response received.";
   } catch(e) { return "Error connecting to AI. Please try again."; }
 }
 
@@ -172,7 +183,7 @@ function buildCtx(sc, sex, age, rn) {
 /* ───────── Sub-Components ───────── */
 const Spinner = () => <div style={{display:"flex",alignItems:"center",gap:8,padding:"12px 0"}}><div style={{width:16,height:16,border:"2px solid #ccc",borderTopColor:"currentColor",borderRadius:"50%",animation:"spin .8s linear infinite"}}/><span style={{fontSize:".84rem",color:"#888"}}>Generating...</span></div>;
 
-const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
+const NutrientCard = ({n, selConds, sex, age, isOpen, onToggle}) => {
   const rv=n.rda[sex]?.[age]||"";
   const rel=selConds.filter(c=>n.conditions.includes(c.id));
   const [dive,setDive]=useState(null);
@@ -194,62 +205,53 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
     return parts.map((p,i)=>i%2===1?<strong key={i} style={{color:t.pri}}>{p}</strong>:<span key={i}>{p}</span>);
   };
 
-  if(!isOpen){
-    return (
-      <div onClick={onToggle} style={{background:"#f8faf9",borderRadius:14,overflow:"hidden",cursor:"pointer",transition:"box-shadow .2s, transform .2s",display:"flex",flexDirection:"column",height:"100%"}}>
-        <div style={{padding:"18px 18px 14px",flex:1,display:"flex",flexDirection:"column"}}>
-          <div style={{fontSize:".95rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</div>
-          <div style={{fontSize:".82rem",color:"#666",lineHeight:1.55,flex:1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.simple}</div>
-          <div style={{display:"flex",flexWrap:"wrap",gap:4,marginTop:10}}>
-            {rel.slice(0,3).map(c=><span key={c.id} style={{fontSize:".68rem",background:"#f7f7f7",color:"#666",borderRadius:6,padding:"2px 7px",fontWeight:500}}>{c.icon} {c.name}</span>)}
-            {rel.length>3&&<span style={{fontSize:".68rem",color:"#999",padding:"2px 4px"}}>+{rel.length-3}</span>}
-          </div>
-        </div>
-        <div style={{padding:"10px 18px",display:"flex",alignItems:"center",justifyContent:"flex-end",gap:4,fontSize:".76rem",color:"#bbb",fontWeight:500}}>Learn more <span style={{fontSize:".7rem"}}>&#9656;</span></div>
-      </div>
-    );
-  }
-
   return (
-    <div style={{background:"#f8faf9",borderRadius:14,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,.06)",gridColumn:"1 / -1",border:`1.5px solid ${t.mid}`}}>
-      <div onClick={onToggle} style={{padding:"16px 18px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",background:t.lt}}>
-        <div style={{fontSize:".96rem",fontWeight:600,color:t.pri}}>{n.name}</div>
-        <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,cursor:"pointer"}}>Close</div>
+    <div style={{background:"#fff",borderRadius:12,marginBottom:16,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+      <div onClick={onToggle} style={{padding:"15px 18px",cursor:"pointer",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:".96rem",fontWeight:600,color:"#333"}}>{n.name}</div>
+          <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>{n.simple}</div>
+          <div style={{fontSize:".72rem",color:"#999",marginTop:6}}>Relevant to: {rel.map(c=>`${c.icon} ${c.name}`).join(" \u00B7 ")}</div>
+        </div>
+        <div style={{fontSize:".78rem",color:"#999",fontWeight:600,whiteSpace:"nowrap",flexShrink:0,marginTop:2}}>{isOpen?"Show less \u25B2":"Learn more \u25BC"}</div>
       </div>
-      <div style={{padding:"18px"}}>
-        <div style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginBottom:14}}>{n.detail}</div>
-        <div style={{fontSize:".72rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#999",margin:"12px 0 6px"}}>Your Daily Target</div>
-        <div style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"1px solid rgba(0,0,0,.05)",fontSize:".85rem"}}>
-          <span style={{color:"#777"}}>{sex==="female"?"Women":"Men"}, {age}</span>
-          <span style={{fontWeight:600,color:t.pri}}>{rv}</span>
-        </div>
-        <div style={{fontSize:".72rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#999",margin:"12px 0 6px"}}>Food Sources</div>
-        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:10}}>
-          {n.foods.map((f,i)=>(
-            <div key={i} style={{background:"#f2f3f4",borderRadius:8,padding:"8px 12px",fontSize:".82rem",border:"none"}}>
-              <strong style={{display:"block",color:"#333",fontWeight:600}}>{f.n}</strong>
-              <span style={{color:"#777"}}>{f.s}: {f.v}</span>
-              {f.note&&<div style={{color:t.pri,fontSize:".77rem",fontWeight:600,marginTop:2}}>{f.note}</div>}
+      {isOpen&&(
+        <div style={{padding:"0 18px 18px"}}>
+          <div style={{padding:"16px 0 4px",borderTop:"1px solid #e8eeec"}}>
+            <div style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginBottom:12}}>{n.detail}</div>
+            <div style={{fontSize:".72rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#999",margin:"12px 0 6px"}}>Your Daily Target</div>
+            <div style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:"1px solid rgba(0,0,0,.05)",fontSize:".85rem"}}>
+              <span style={{color:"#777"}}>{sex==="female"?"Women":"Men"}, {age}</span>
+              <span style={{fontWeight:600,color:t.pri}}>{rv}</span>
             </div>
-          ))}
-        </div>
-        {n.foodAction&&<div style={{marginTop:16,fontSize:".84rem",color:"#555",fontWeight:500,lineHeight:1.55,paddingLeft:10,borderLeft:`3px solid ${t.pri}`,display:"inline-block"}}>{n.foodAction}</div>}
-        {!dive&&<div style={{marginTop:16}}>
-          <button onClick={doDive} style={{background:"transparent",color:t.pri,border:"none",borderRadius:8,padding:"8px 0",fontSize:".82rem",fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
-            <span style={{fontSize:".9rem"}}>{"\uD83D\uDD0D"}</span> AI Deep Dive — Personalized for Your Conditions
-          </button>
-        </div>}
-        {loading&&<Spinner/>}
-        {dive&&!loading&&(
-          <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75,position:"relative"}}>
-            <button onClick={doDive} style={{position:"absolute",top:10,right:12,background:"transparent",border:"none",cursor:"pointer",fontSize:".78rem",color:t.learn,fontWeight:600}}>Close</button>
-            <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
-              AI-Generated Personalized Guidance
+            <div style={{fontSize:".72rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#999",margin:"12px 0 6px"}}>Food Sources</div>
+            <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:10}}>
+              {n.foods.map((f,i)=>(
+                <div key={i} style={{background:"#f2f3f4",borderRadius:8,padding:"8px 12px",fontSize:".82rem",border:"none"}}>
+                  <strong style={{display:"block",color:"#333",fontWeight:600}}>{f.n}</strong>
+                  <span style={{color:"#777"}}>{f.s}: {f.v}</span>
+                  {f.note&&<div style={{color:t.pri,fontSize:".77rem",fontWeight:600,marginTop:2}}>{f.note}</div>}
+                </div>
+              ))}
             </div>
-            {dive.split("\n").filter(Boolean).map((p,i)=><p key={i} style={{marginBottom:8}}>{renderDive(p)}</p>)}
+            {n.foodAction&&<div style={{marginTop:16,fontSize:".84rem",color:"#555",fontWeight:500,lineHeight:1.55,paddingLeft:10,borderLeft:`3px solid ${t.pri}`,display:"inline-block"}}>{n.foodAction}</div>}
+            <div style={{marginTop:16}}>
+              <button onClick={doDive} style={{background:dive?t.hover:t.badge,color:t.badgeTxt,border:`1px solid ${t.mid}`,borderRadius:8,padding:"8px 16px",fontSize:".82rem",fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
+                <span style={{fontSize:".9rem"}}>{dive?"\u2715":"\u2728"}</span> {dive?"Close Deep Dive":"AI Deep Dive \u2014 Personalized for Your Conditions"}
+              </button>
+            </div>
+            {loading&&<Spinner/>}
+            {dive&&!loading&&(
+              <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75}}>
+                <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
+                  {"\u2728"} AI-Generated Personalized Guidance
+                </div>
+                {dive.split("\n").filter(Boolean).map((p,i)=><p key={i} style={{marginBottom:8}}>{renderDive(p)}</p>)}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -258,7 +260,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
    Slide-in panel, resets on open, suggestion buttons
    Renders bold text from AI responses
    == END: Chat Panel Component == */
-const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
+const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients}) => {
   const [msgs,setMsgs]=useState([]);
   const [input,setInput]=useState("");
   const [loading,setLoading]=useState(false);
@@ -284,68 +286,125 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients,t}) => {
 
   const renderMsg=(text)=>{
     const parts=text.split(/\*\*([^*]+)\*\*/g);
-    return parts.map((p,i)=>i%2===1?<strong key={i} style={{display:p.endsWith(':')?'block':'inline'}}>{p}</strong>:<span key={i}>{p}</span>);
+    return parts.map((p,i)=>i%2===1?<strong key={i}>{p}</strong>:<span key={i}>{p}</span>);
   };
 
-  const suggestions=["What should I eat for breakfast?","Best anti-inflammatory foods for me?","How do my conditions interact nutritionally?"];
+  const suggestions=["What should I eat for breakfast?","Best anti-inflammatory foods for me?","Can I eat bananas?","How do my conditions interact nutritionally?"];
 
   if(!isOpen) return null;
   return (
-    <div style={{position:"fixed",top:57,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderBottomLeftRadius:16,boxShadow:"-4px 4px 24px rgba(0,0,0,.12)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
-      <div style={{padding:"14px 18px",background:t.lt,borderBottom:`1px solid ${t.mid}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
-        <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
-        <button onClick={onClose} style={{background:"transparent",border:`1px solid ${t.mid}`,color:"#999",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem"}}>{"\u2715"}</button>
+    <>
+      <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
+      <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
+        <div style={{padding:"14px 18px",background:t.lt,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
+          <div><div style={{fontWeight:700,fontSize:".92rem",color:t.pri}}>Ask NutriGuide</div><div style={{fontSize:".72rem",color:"#999"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
+          <button onClick={onClose} style={{background:"#fff",border:`1px solid ${t.mid}`,color:"#777",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+        </div>
+        <div style={{flex:1,overflowY:"auto",padding:16}}>
+          {msgs.length===0&&(
+            <div>
+              <p style={{fontSize:".85rem",color:"#777",marginBottom:12,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:t.pri,cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              </div>
+            </div>
+          )}
+          {msgs.map((m,i)=>(
+            <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+              <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:m.role==="user"?t.dk:"#444",fontSize:".86rem",lineHeight:1.7}}>
+                {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
+              </div>
+            </div>
+          ))}
+          {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.lt}}><Spinner/></div></div>}
+          <div ref={endRef}/>
+        </div>
+        <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
+          <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrition..." style={{flex:1,padding:"10px 14px",border:"1px solid #ddd",borderRadius:10,fontSize:".88rem",outline:"none"}}/>
+          <button onClick={send} disabled={!input.trim()||loading} style={{background:t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+        </div>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:16}}>
-        {msgs.length===0&&(
-          <div>
-            <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
-            <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+    </>
+  );
+};
+
+/* == START: Settings Panel Component ==
+   Contains profile editing (sex, age) and condition selection
+   Replaces the old theme switcher
+   == END: Settings Panel Component == */
+const SettingsPanel = ({isOpen, onClose, sex, setSex, age, setAge, selected, toggleCond}) => {
+  if(!isOpen) return null;
+  return (
+    <div style={{position:"fixed",inset:0,zIndex:600,display:"flex",alignItems:"center",justifyContent:"center"}}>
+      <div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,.35)"}}/>
+      <div style={{position:"relative",background:"#fff",borderRadius:16,width:"min(560px, 92vw)",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 12px 40px rgba(0,0,0,.18)"}}>
+        {/* Header */}
+        <div style={{padding:"18px 24px",background:t.lt,borderBottom:"none",borderRadius:"16px 16px 0 0",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{fontSize:"1rem",fontWeight:600,color:t.pri}}>Settings</div>
+          <button onClick={onClose} style={{width:30,height:30,borderRadius:8,background:"#fff",border:`1px solid ${t.mid}`,cursor:"pointer",fontSize:".85rem",color:"#777",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+        </div>
+
+        <div style={{padding:"24px",background:"#F9FAFB"}}>
+          {/* Profile section */}
+          <div style={{background:"#fff",borderRadius:14,padding:"20px 22px",marginBottom:24,boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
+            <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Your Profile</div>
+            <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
+              <div style={{flex:1,minWidth:140}}>
+                <label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Biological Sex</label>
+                <select value={sex} onChange={e=>setSex(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </div>
+              <div style={{flex:1,minWidth:140}}>
+                <label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Age Group</label>
+                <select value={age} onChange={e=>setAge(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}>
+                  <option value="50-60">{"\u0035\u0030\u2013\u0036\u0030 years"}</option>
+                  <option value="61-70">{"\u0036\u0031\u2013\u0037\u0030 years"}</option>
+                  <option value="71+">71+ years</option>
+                </select>
+              </div>
             </div>
           </div>
-        )}
-        {msgs.map((m,i)=>(
-          <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
-              {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
+
+          {/* Conditions section */}
+          <div style={{background:"#fff",borderRadius:14,padding:"20px 22px",boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+              <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777"}}>Health Concerns <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:"#aaa"}}>(choose all that apply)</span></div>
+              <div style={{fontSize:".82rem",color:"#999",flexShrink:0}}>Selected: <span style={{color:t.pri,fontWeight:700}}>{selected.size}</span></div>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
+              {conditions.map(c=>{const isSel=selected.has(c.id);return(
+                <div key={c.id} onClick={()=>toggleCond(c.id)} style={{background:isSel?t.lt:"#f8f9fa",border:isSel?`1px solid ${t.mid}`:"1px solid transparent",borderRadius:8,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:10,boxShadow:isSel?"0 1px 4px rgba(0,0,0,.08)":"0 1px 4px rgba(0,0,0,.06)",transition:"all .15s"}}>
+                  <span style={{fontSize:"1.2rem",width:26,textAlign:"center",flexShrink:0}}>{c.icon}</span>
+                  <div style={{flex:1,minWidth:0}}><div style={{fontSize:".85rem",fontWeight:500,color:"#333",lineHeight:1.3}}>{c.name}</div><div style={{fontSize:".72rem",color:"#999",marginTop:2}}>{catLabels[c.cat]}</div></div>
+                </div>
+              );})}
             </div>
           </div>
-        ))}
-        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.lt}}><Spinner/></div></div>}
-        <div ref={endRef}/>
-      </div>
-      <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
-        <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrition..." style={{flex:1,padding:"10px 14px",border:`1.5px solid ${t.mid}`,borderRadius:10,fontSize:".88rem",outline:"none"}}/>
-        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+        </div>
       </div>
     </div>
   );
 };
 
 /* == START: Main App ==
-   Screen: select (condition picker) → guidance (results)
-   Nav: connections, nutrients, foods to limit, supplements, chat
+   No select screen — goes straight to guidance
+   Nav: connections, nutrients, foods to limit, supplements
+   Show/hide sections (no scroll observer)
    == END: Main App == */
-const navSections=[{id:"connection",label:"How Conditions Are Linked"},{id:"nutrients",label:"Key Nutrients & Foods"},{id:"limit",label:"Foods to Limit"},{id:"supplements",label:"Supplements"}];
+const navSections=[{id:"connection",label:"Connections",labelLong:"How Conditions Are Linked"},{id:"nutrients",label:"Nutrients",labelLong:"Key Nutrients & Foods"},{id:"limit",label:"Limit",labelLong:"Foods to Limit"},{id:"supplements",label:"Supplements",labelLong:"Supplements"}];
 
 export default function NutriGuide() {
-  const nav = useNavigate();
-  const [screen,setScreen]=useState("select");
   const [sex,setSex]=useState("female");
   const [age,setAge]=useState("50-60");
   const [selected,setSelected]=useState(new Set());
-  const [theme,setTheme]=useState("green");
   const [settingsOpen,setSettingsOpen]=useState(false);
   const [activeNav,setActiveNav]=useState("connection");
   const [openNuts,setOpenNuts]=useState(new Set());
   const [pathOpen,setPathOpen]=useState(false);
   const [chatOpen,setChatOpen]=useState(false);
-  const [drawerOpen,setDrawerOpen]=useState(false);
-  const sectionRefs=useRef({});
-  const t=themes[theme];
-
-  useEffect(() => { document.title = "NutriGuide"; }, []);
+  const [hasOnboarded,setHasOnboarded]=useState(false);
 
   const toggleCond=(id)=>{
     setSelected(prev=>{
@@ -366,262 +425,219 @@ export default function NutriGuide() {
   const relF=foodsToLimit.filter(f=>f.conds.some(c=>selIds.includes(c)));
   const suppAll=relN.filter(n=>n.supp);
 
-  const contentRef=useRef(null);
-  const navClick=(sec)=>{setActiveNav(sec);setDrawerOpen(false);const el=sectionRefs.current[sec];const container=contentRef.current;if(el&&container){const elRect=el.getBoundingClientRect();const contRect=container.getBoundingClientRect();container.scrollTo({top:container.scrollTop+(elRect.top-contRect.top)+4,behavior:"smooth"});}};
-
-  useEffect(()=>{
-    if(screen!=="guidance")return;
-    const timer=setTimeout(()=>{
-      const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActiveNav(e.target.dataset.sec);});},{threshold:.15,rootMargin:"-5% 0px -75% 0px"});
-      navSections.forEach(s=>{const el=sectionRefs.current[s.id];if(el)obs.observe(el);});
-      return ()=>obs.disconnect();
-    },150);
-    return ()=>clearTimeout(timer);
-  },[screen]);
-
-  const SettingsPopover = () => settingsOpen ? (
-    <div style={{position:"absolute",right:0,top:42,background:"#fff",border:"1px solid #e0e8e5",borderRadius:12,padding:"14px 16px",boxShadow:"0 6px 24px rgba(0,0,0,.12)",zIndex:200,whiteSpace:"nowrap"}}>
-      <div style={{fontSize:".7rem",color:"#9ab8b2",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",marginBottom:10}}>Theme Color</div>
-      <div style={{display:"flex",gap:14}}>
-        {Object.entries(themes).map(([k,v])=><div key={k} onClick={()=>{setTheme(k);setSettingsOpen(false);}} style={{width:28,height:28,borderRadius:"50%",background:v.pri,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:".7rem",fontWeight:800}}>{theme===k?"\u2713":""}</div>)}
-      </div>
-    </div>
-  ) : null;
-
-  const NavItems = ({onExtra}) => (
-    <>
-      {navSections.map(s=>(
-        <div key={s.id} onClick={()=>{navClick(s.id);onExtra?.();}} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?700:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
-          <span style={{width:18,height:18,display:"flex",alignItems:"center",justifyContent:"center"}}><NavIcon type={s.id} color={activeNav===s.id?t.pri:"#666"}/></span>
-          {s.label}
-        </div>
-      ))}
-    </>
-  );
-
-  /* ── SELECT SCREEN ── */
-  if(screen==="select"){
+  /* ── ONBOARDING (first-time) ── */
+  if(!hasOnboarded){
     return (
-      <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#f2f4f8",minHeight:"100vh",color:"#555"}}>
+      <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#F9FAFB",minHeight:"100vh",color:"#555"}}>
         <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",position:"sticky",top:0,zIndex:100,padding:"12px 20px"}}>
-          <div onClick={()=>nav('/')} style={{fontSize:".78rem",color:"#999",cursor:"pointer",fontWeight:500,marginBottom:4,display:"inline-flex",alignItems:"center",gap:3}}><span style={{fontSize:".7rem"}}>←</span> Back to Apps</div>
-          <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
-            <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
-              <div style={{display:"flex",alignItems:"center",gap:7}}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
-                <div>
-                  <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></div>
-                  <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
-                </div>
-              </div>
-            </div>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end"}}>
-              <div style={{position:"relative"}}>
-                <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
-                  <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:t.pri,fill:"none",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                </button>
-                <SettingsPopover/>
-              </div>
+        <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"14px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:100}}>
+          <div style={{display:"flex",alignItems:"center",gap:7}}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}>
+              <circle cx="24" cy="24" r="21" fill="none" stroke="#2E7AD9" strokeWidth="3.5"/>
+              <path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#2E7AD9"/>
+              <circle cx="24" cy="24" r="2.8" fill="#fff"/>
+            </svg>
+            <div>
+              <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:300,color:"#2E7AD9"}}>Guide</span></div>
+              <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
             </div>
           </div>
         </header>
         <div style={{padding:"32px 24px",maxWidth:940,margin:"0 auto"}}>
-          <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Welcome to NutriGuide</div>
+          <BackToGallery/>
+          <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4,marginTop:16}}>Welcome to NutriGuide</div>
           <div style={{color:"#777",fontSize:".92rem",marginBottom:28}}>Select your profile and health concerns to receive personalized, food-first nutrition guidance tailored to your conditions.</div>
-          {/* Your Profile wrapper */}
-          <div style={{background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)",marginBottom:20}}>
+          <div style={{background:"#fff",borderRadius:14,padding:"20px 22px",marginBottom:24,boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
             <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Your Profile</div>
             <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
-              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Biological Sex</label><select value={sex} onChange={e=>setSex(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#f8faf9"}}><option value="female">Female</option><option value="male">Male</option></select></div>
-              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Age Group</label><select value={age} onChange={e=>setAge(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1.5px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#f8faf9"}}><option value="50-60">{"50\u201360 years"}</option><option value="61-70">{"61\u201370 years"}</option><option value="71+">71+ years</option></select></div>
+              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Biological Sex</label><select value={sex} onChange={e=>setSex(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}><option value="female">Female</option><option value="male">Male</option></select></div>
+              <div style={{flex:1,minWidth:140}}><label style={{display:"block",fontSize:".78rem",fontWeight:600,color:"#777",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>Age Group</label><select value={age} onChange={e=>setAge(e.target.value)} style={{width:"100%",padding:"9px 12px",border:"1px solid #ddd",borderRadius:8,fontSize:".92rem",color:"#555",outline:"none",background:"#fff"}}><option value="50-60">{"50\u201360 years"}</option><option value="61-70">{"61\u201370 years"}</option><option value="71+">71+ years</option></select></div>
             </div>
           </div>
-          {/* Health Concerns wrapper */}
-          <div style={{background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)",marginBottom:28}}>
-            <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777",marginBottom:12}}>Select Your Health Concerns <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:"#aaa"}}>(choose all that apply)</span></div>
-            <div style={{fontSize:".85rem",color:"#999",marginBottom:16}}>Selected: <span style={{color:t.pri,fontWeight:700}}>{selected.size}</span> conditions</div>
+          <div style={{background:"#fff",borderRadius:14,padding:"20px 22px",marginBottom:28,boxShadow:"0 2px 8px rgba(0,0,0,.04)"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:14}}>
+              <div style={{fontSize:".8rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",color:"#777"}}>Select Your Health Concerns <span style={{fontWeight:400,textTransform:"none",letterSpacing:0,color:"#aaa"}}>(choose all that apply)</span></div>
+              <div style={{fontSize:".82rem",color:"#999",flexShrink:0}}>Selected: <span style={{color:t.pri,fontWeight:700}}>{selected.size}</span></div>
+            </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
               {conditions.map(c=>{const isSel=selected.has(c.id);return(
-                <div key={c.id} onClick={()=>toggleCond(c.id)} style={{background:"#f8faf9",border:isSel?`1.5px solid ${t.mid}`:"1.5px solid transparent",borderRadius:12,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:10,boxShadow:isSel?"0 1px 4px rgba(0,0,0,.06)":"none",transition:"all .15s"}}>
+                <div key={c.id} onClick={()=>toggleCond(c.id)} style={{background:isSel?t.lt:"#f8f9fa",border:isSel?`1px solid ${t.mid}`:"1px solid transparent",borderRadius:8,padding:"11px 13px",cursor:"pointer",display:"flex",alignItems:"center",gap:10,boxShadow:isSel?"0 1px 4px rgba(0,0,0,.08)":"0 1px 4px rgba(0,0,0,.06)",transition:"all .15s"}}>
                   <span style={{fontSize:"1.2rem",width:26,textAlign:"center",flexShrink:0}}>{c.icon}</span>
                   <div style={{flex:1,minWidth:0}}><div style={{fontSize:".85rem",fontWeight:500,color:"#333",lineHeight:1.3}}>{c.name}</div><div style={{fontSize:".72rem",color:"#999",marginTop:2}}>{catLabels[c.cat]}</div></div>
-                  <div style={{width:18,height:18,borderRadius:"50%",border:isSel?`2px solid ${t.pri}`:"2px solid #d0deda",background:isSel?t.pri:"transparent",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:".62rem",color:"#fff",transition:"all .15s"}}>{isSel?"\u2713":""}</div>
                 </div>
               );})}
             </div>
           </div>
-          <button disabled={!selected.size} onClick={()=>{setScreen("guidance");setOpenNuts(new Set());setPathOpen(false);setActiveNav("connection");setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
-          <div style={{padding:"16px 0",marginTop:32,textAlign:"center"}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
-              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></span>
-              <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
-              <span style={{fontSize:".68rem",color:"#aaa"}}>Personalized Nutrition Guidance</span>
-            </div>
-            <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
-          </div>
+          <button disabled={!selected.size} onClick={()=>{setHasOnboarded(true);setActiveNav("connection");setOpenNuts(new Set());setPathOpen(false);setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
         </div>
       </div>
     );
   }
 
   /* ── GUIDANCE SCREEN ── */
+  const SectionContent = ({id}) => {
+    if(id==="connection") return (
+      <>
+        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="connection" color={t.pri}/> How Your Conditions Are Linked</div>
+        <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Many chronic conditions share the same underlying biological processes. Understanding these connections explains why improving one area of your nutrition can benefit multiple conditions at once.</p>
+        {selConds.map(c=>(
+          <div key={c.id} style={{background:"#fff",borderRadius:12,padding:"18px 20px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+            <h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:7}}>{c.icon} {c.name}</h4>
+            {c.connection.map((p,i)=><p key={i} style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginTop:i>0?14:0}}>{p}</p>)}
+          </div>
+        ))}
+        {sharedP.length>0&&(
+          <div style={{background:"#fff",borderRadius:12,marginBottom:16,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+            <div onClick={()=>setPathOpen(!pathOpen)} style={{padding:"15px 20px",cursor:"pointer"}}>
+              <div style={{fontSize:".96rem",fontWeight:700,color:"#333",display:"flex",alignItems:"center",gap:8}}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={t.pri} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M10 13l-3.5 4M14 13l3.5 4"/></svg>
+                Shared Biological Pathways
+              </div>
+              <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>Your conditions share key biological pathways. Improving them through nutrition benefits all your health concerns.</div>
+              <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:t.badge,color:t.badgeTxt,borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
+              <div style={{textAlign:"right",marginTop:10}}><span style={{fontSize:".78rem",color:"#999",fontWeight:600}}>{pathOpen?"Show less \u25B2":"Learn more \u25BC"}</span></div>
+            </div>
+            {pathOpen&&(
+              <div style={{padding:"16px 20px 4px",borderTop:"1px solid #e8eeec"}}>
+                {sharedP.map(p=>pathwayDetails[p]?(
+                  <div key={p} style={{marginBottom:14}}>
+                    <p style={{fontSize:".86rem",color:"#555",lineHeight:1.7,marginBottom:4}}><strong>{p}:</strong> {pathwayDetails[p][0]}</p>
+                    <p style={{fontSize:".86rem",color:"#555",lineHeight:1.7}}>{pathwayDetails[p][1]}</p>
+                  </div>
+                ):null)}
+              </div>
+            )}
+          </div>
+        )}
+      </>
+    );
+    if(id==="nutrients") return (
+      <>
+        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
+        <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions \u2014 most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
+        {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Essential Nutrients</div>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</>}
+        {bioactives.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Bioactive Compounds</div>{bioactives.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</>}
+      </>
+    );
+    if(id==="limit") return (
+      <>
+        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
+        <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited \u2014 frequency and portion size matter most.</p>
+        {relF.length>0?(
+          <div style={{background:"#fff",borderRadius:12,padding:"18px 20px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+            {relF.map((f,i)=><div key={i} style={{display:"flex",gap:10,marginBottom:i<relF.length-1?10:0,fontSize:".87rem"}}><span style={{color:"#c0392b",fontWeight:700,flexShrink:0,marginTop:1}}>{"\u2192"}</span><div><strong style={{color:"#333",display:"block",marginBottom:2,fontWeight:500}}>{f.food}</strong><span style={{color:"#777"}}>{f.reason}</span></div></div>)}
+          </div>
+        ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>No specific foods to limit identified.</div>}
+      </>
+    );
+    if(id==="supplements") return (
+      <>
+        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
+        <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only \u2014 not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
+        {suppAll.length>0?(
+          <>
+            {suppAll.filter(n=>n.type==="nutrient").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Essential Nutrients</div>{suppAll.filter(n=>n.type==="nutrient").map(n=><div key={n.id} style={{background:"#fff",borderRadius:12,padding:"16px 18px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</h4><p style={{fontSize:".86rem",color:"#555",lineHeight:1.65}}>{n.supp}</p></div>)}</>}
+            {suppAll.filter(n=>n.type==="bioactive").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Bioactive Compounds</div>{suppAll.filter(n=>n.type==="bioactive").map(n=><div key={n.id} style={{background:"#fff",borderRadius:12,padding:"16px 18px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</h4><p style={{fontSize:".86rem",color:"#555",lineHeight:1.65}}>{n.supp}</p></div>)}</>}
+          </>
+        ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>Food sources generally sufficient.</div>}
+        <div style={{background:"#fef4f4",borderRadius:12,padding:"16px 18px",marginTop:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+          <h4 style={{fontSize:".85rem",fontWeight:700,color:"#c0392b",marginBottom:6}}>{"\u2695\uFE0F"} Important Safety Note</h4>
+          <p style={{fontSize:".83rem",color:"#7b241c",lineHeight:1.6}}>Supplements may interact with medications. Discuss with your provider before starting. This is educational, not medical advice.</p>
+        </div>
+      </>
+    );
+    return null;
+  };
+
+  const NavItems = () => (
+    <>
+      {navSections.map(s=>(
+        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?700:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
+          <span style={{width:18,height:18,display:"flex",alignItems:"center",justifyContent:"center"}}><NavIcon type={s.id} color={activeNav===s.id?t.pri:"#666"}/></span>
+          {s.labelLong}
+        </div>
+      ))}
+    </>
+  );
+
   return (
-    <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#fff",minHeight:"100vh",color:"#555"}}>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}} @media(max-width:768px){.ngNavD{display:none!important}.ngHam{display:flex!important}}`}</style>
-      <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",position:"sticky",top:0,zIndex:100,padding:"12px 20px"}}>
-        <div onClick={()=>nav('/')} style={{fontSize:".78rem",color:"#999",cursor:"pointer",fontWeight:500,marginBottom:4,display:"inline-flex",alignItems:"center",gap:3}}><span style={{fontSize:".7rem"}}>←</span> Back to Apps</div>
+    <div style={{fontFamily:"'Segoe UI',system-ui,sans-serif",background:"#fff",minHeight:"100vh",color:"#555",paddingBottom:60}}>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}} @media(max-width:768px){.ngNavD{display:none!important}.ngBottomBar{display:flex!important}}`}</style>
+
+      {/* Header */}
+      <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"12px 20px",position:"sticky",top:0,zIndex:100}}>
         <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}>
+                <circle cx="24" cy="24" r="21" fill="none" stroke="#2E7AD9" strokeWidth="3.5"/>
+                <path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#2E7AD9"/>
+                <circle cx="24" cy="24" r="2.8" fill="#fff"/>
+              </svg>
               <div>
-                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></div>
+                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:300,color:"#2E7AD9"}}>Guide</span></div>
                 <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
               </div>
             </div>
           </div>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:2}}>
-            <button onClick={()=>setScreen("select")} title="Back" style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><path d="M7 12l10-8v16z"/></svg>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end"}}>
+            <button onClick={()=>setSettingsOpen(true)} style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:t.pri,fill:"none",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </button>
-            <button onClick={()=>window.print()} title="Print" style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:"#888",display:"flex",alignItems:"center",justifyContent:"center"}}>
-              <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:"currentColor",fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"}}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-            </button>
-            <div style={{position:"relative"}}>
-              <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",color:t.pri,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                <svg viewBox="0 0 24 24" style={{width:20,height:20,stroke:t.pri,fill:"none",strokeWidth:1.8,strokeLinecap:"round",strokeLinejoin:"round"}}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              </button>
-              <SettingsPopover/>
-            </div>
-            <button className="ngHam" onClick={()=>setDrawerOpen(true)} style={{display:"none",flexDirection:"column",justifyContent:"center",gap:5,width:36,height:36,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7}} aria-label="Menu"><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/><span style={{display:"block",height:2,background:"#777",borderRadius:2}}/></button>
           </div>
           <div style={{display:"flex",justifyContent:"flex-end",alignItems:"center",paddingRight:8}}>
             <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:5,color:t.pri,fontSize:".8rem",fontWeight:600,cursor:"pointer"}}>
-              <NavIcon type="chat" color={t.pri}/> Ask Expert
+              <svg viewBox="0 0 24 24" style={{width:16,height:16,stroke:t.pri,fill:"none",strokeWidth:2}}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Ask Expert
             </span>
           </div>
         </div>
       </header>
 
-      {/* Mobile drawer */}
-      {drawerOpen&&<div onClick={()=>setDrawerOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:300}}/>}
-      {drawerOpen&&(
-        <div style={{position:"fixed",top:0,left:0,width:260,height:"100vh",background:"#fff",zIndex:400,boxShadow:"4px 0 20px rgba(0,0,0,.15)",display:"flex",flexDirection:"column"}}>
-          <div style={{padding:"16px 18px",borderBottom:"1px solid #e8eeec",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-            <div style={{fontSize:".85rem",fontWeight:700,color:"#333"}}>Navigation</div>
-            <button onClick={()=>setDrawerOpen(false)} style={{width:28,height:28,borderRadius:6,background:"#f5f8f7",border:"1px solid #e0e8e5",cursor:"pointer",fontSize:".85rem",color:"#777",display:"flex",alignItems:"center",justifyContent:"center"}}>\u2715</button>
-          </div>
-          <div style={{padding:"10px 0",overflowY:"auto"}}><NavItems onExtra={()=>setDrawerOpen(false)}/></div>
-        </div>
-      )}
+      <div style={{display:"flex",flex:1,minHeight:"calc(100vh - 57px)"}}>
+        {/* Desktop sidebar nav */}
+        <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,alignSelf:"flex-start",height:"calc(100vh - 57px)",overflowY:"auto",display:"flex",flexDirection:"column"}}><div style={{padding:"0 16px 12px"}}><BackToGallery/></div><NavItems/></div>
 
-      <div style={{display:"flex",minHeight:"calc(100vh - 57px)"}}>
-        {/* Desktop nav */}
-        <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,height:"calc(100vh - 57px)",overflowY:"auto"}}><NavItems/></div>
-
-        {/* Content */}
-        <div ref={contentRef} style={{flex:1,padding:"28px 28px 60vh 28px",overflowY:"auto",height:"calc(100vh - 57px)",background:"#f2f4f8"}}>
-          <div style={{marginBottom:28}}>
-            <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Your Personalized Nutrition Guidance</div>
-            <div style={{fontSize:".8rem",color:"#777",lineHeight:1.5,display:"flex",flexWrap:"wrap",alignItems:"baseline",gap:4}}>
-              <strong style={{color:"#555",fontWeight:500}}>{selConds.length} condition{selConds.length>1?"s":""} selected:</strong>
-              {selConds.map((c,i)=><span key={c.id} style={{fontSize:".78rem",color:"#777",whiteSpace:"nowrap"}}>{c.icon} {c.name}{i<selConds.length-1?" \u00B7":""}</span>)}
+        {/* Content — show only active section */}
+        <div style={{flex:1,padding:28,minHeight:"calc(100vh - 57px)",background:t.contBg}}>
+          {selected.size===0?(
+            <div style={{textAlign:"center",padding:"60px 20px",color:"#999"}}>
+              <div style={{fontSize:"2rem",marginBottom:12}}>{"\uD83C\uDF3F"}</div>
+              <div style={{fontSize:"1.1rem",fontWeight:500,color:"#777",marginBottom:8}}>No conditions selected</div>
+              <div style={{fontSize:".88rem",lineHeight:1.6,marginBottom:20}}>Open Settings to select your health concerns and see personalized nutrition guidance.</div>
+              <button onClick={()=>setSettingsOpen(true)} style={{background:t.pri,color:"#fff",border:"none",padding:"10px 24px",borderRadius:8,fontSize:".9rem",fontWeight:600,cursor:"pointer"}}>Open Settings</button>
             </div>
-          </div>
-
-          {/* Connections */}
-          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
-            <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="connection" color={t.pri}/> How Your Conditions Are Linked</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Many chronic conditions share the same underlying biological processes. Understanding these connections explains why improving one area of your nutrition can benefit multiple conditions at once.</p>
-            {selConds.map(c=>(
-              <div key={c.id} style={{background:"#f8faf9",borderRadius:12,padding:"18px 20px",marginBottom:16}}>
-                <h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:7}}>{c.icon} {c.name}</h4>
-                {c.connection.map((p,i)=><p key={i} style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginTop:i>0?14:0}}>{p}</p>)}
-              </div>
-            ))}
-            {sharedP.length>0&&(
-              <div style={{background:"#f8faf9",borderRadius:12,marginBottom:16,overflow:"hidden"}}>
-                <div onClick={()=>setPathOpen(!pathOpen)} style={{padding:"15px 20px",cursor:"pointer",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:".96rem",fontWeight:700,color:"#333",display:"flex",alignItems:"center",gap:8}}>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={t.pri} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M10 13l-3.5 4M14 13l3.5 4"/></svg>
-                      Shared Biological Pathways
-                    </div>
-                    <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>Your conditions share key biological pathways. Improving them through nutrition benefits all your health concerns.</div>
-                    <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:"#f7f7f7",color:"#666",borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
-                  </div>
-                  <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,whiteSpace:"nowrap"}}>{pathOpen?"Show less \u25B2":"Learn more \u25BC"}</div>
+          ):(
+            <>
+              <div style={{marginBottom:28}}>
+                <div style={{fontSize:"1.5rem",fontWeight:400,color:"#666",marginBottom:4}}>Your Personalized Nutrition Guidance</div>
+                <div style={{fontSize:".8rem",color:"#777",lineHeight:1.5,display:"flex",flexWrap:"wrap",alignItems:"baseline",gap:4}}>
+                  <strong style={{color:"#555",fontWeight:500}}>{selConds.length} condition{selConds.length>1?"s":""} selected:</strong>
+                  {selConds.map((c,i)=><span key={c.id} style={{fontSize:".78rem",color:"#777",whiteSpace:"nowrap"}}>{c.icon} {c.name}{i<selConds.length-1?" \u00B7":""}</span>)}
                 </div>
-                {pathOpen&&(
-                  <div style={{padding:"16px 20px 4px",borderTop:"1px solid #e8eeec"}}>
-                    {sharedP.map(p=>pathwayDetails[p]?(
-                      <div key={p} style={{marginBottom:14}}>
-                        <p style={{fontSize:".86rem",color:"#555",lineHeight:1.7,marginBottom:4}}><strong>{p}:</strong> {pathwayDetails[p][0]}</p>
-                        <p style={{fontSize:".86rem",color:"#555",lineHeight:1.7}}>{pathwayDetails[p][1]}</p>
-                      </div>
-                    ):null)}
-                  </div>
-                )}
               </div>
-            )}
-          </div>
-
-          {/* Nutrients */}
-          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
-            <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions — most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
-            {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
-            {bioactives.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"22px 0 12px"}}>Bioactive Compounds</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{bioactives.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
-          </div>
-
-          {/* Foods to Limit */}
-          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
-            <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited — frequency and portion size matter most.</p>
-            {relF.length>0?(
-              <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))",gap:14}}>
-                {relF.map((f,i)=><div key={i} style={{background:"#f8faf9",borderRadius:14,padding:"18px"}}>
-                  <div style={{fontSize:".88rem",fontWeight:600,color:"#333",marginBottom:4}}>{f.food}</div>
-                  <div style={{fontSize:".82rem",color:"#999",marginBottom:10,lineHeight:1.5}}>{f.reason}</div>
-                  <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#f7f7f7",color:"#666",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
-                </div>)}
-              </div>
-            ):<div style={{background:"#f8faf9",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center"}}>No specific foods to limit identified.</div>}
-          </div>
-
-          {/* Supplements */}
-          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
-            <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
-            <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only — not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
-            {suppAll.length>0?(
-              <>
-                {suppAll.filter(n=>n.type==="nutrient").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="nutrient").map(n=><div key={n.id} style={{background:"#f8faf9",borderRadius:14,padding:"18px 18px 16px",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
-                {suppAll.filter(n=>n.type==="bioactive").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"22px 0 12px"}}>Bioactive Compounds</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="bioactive").map(n=><div key={n.id} style={{background:"#f8faf9",borderRadius:14,padding:"18px 18px 16px",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
-              </>
-            ):<div style={{background:"#f8faf9",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center"}}>Food sources generally sufficient.</div>}
-            <div style={{background:"#fef4f4",borderRadius:12,padding:"16px 18px",marginTop:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
-              <h4 style={{fontSize:".85rem",fontWeight:700,color:"#c0392b",marginBottom:6}}>{"⚕️"} Important Safety Note</h4>
-              <p style={{fontSize:".83rem",color:"#7b241c",lineHeight:1.6}}>Supplements may interact with medications. Discuss with your provider before starting. This is educational, not medical advice.</p>
-            </div>
-          </div>
+              <SectionContent id={activeNav}/>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Footer */}
-      <div style={{padding:"16px 0",textAlign:"center"}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="21" fill="none" stroke="#0d7a5f" strokeWidth="4.5"/><path d="M13 35 L19 19 L35 13 L29 29 Z" fill="#0d7a5f"/><circle cx="24" cy="24" r="2.8" fill="#fff"/></svg>
-          <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:"#0d7a5f"}}>Nutri</span><span style={{fontWeight:300,color:"#0d7a5f"}}>Guide</span></span>
-          <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
-          <span style={{fontSize:".68rem",color:"#aaa"}}>Personalized Nutrition Guidance</span>
-        </div>
-        <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
+      {/* Mobile bottom tab bar with labels */}
+      <div className="ngBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,height:60,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingBottom:"env(safe-area-inset-bottom)"}}>
+        {navSections.map(s=>(
+          <button key={s.id} onClick={()=>setActiveNav(s.id)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,transition:"all .15s",padding:0}} aria-label={s.labelLong}>
+            <NavIcon type={s.id} color={activeNav===s.id?t.pri:"#999"}/>
+            <span style={{fontSize:".62rem",fontWeight:activeNav===s.id?600:400,color:activeNav===s.id?t.pri:"#999",letterSpacing:".01em"}}>{s.label}</span>
+          </button>
+        ))}
       </div>
+
+      {/* Settings modal */}
+      <SettingsPanel isOpen={settingsOpen} onClose={()=>setSettingsOpen(false)} sex={sex} setSex={setSex} age={age} setAge={setAge} selected={selected} toggleCond={toggleCond}/>
 
       {/* Chat */}
-      <ChatPanel isOpen={chatOpen} onClose={()=>setChatOpen(false)} selConds={selConds} sex={sex} age={age} relNutrients={relN} t={t}/>
+      <ChatPanel isOpen={chatOpen} onClose={()=>setChatOpen(false)} selConds={selConds} sex={sex} age={age} relNutrients={relN}/>
+
     </div>
   );
 }
