@@ -9,7 +9,7 @@ export const APPS = [
     description: 'AI-powered personalized nutrition guidance for adults 50+ managing chronic conditions. Explore how your conditions are connected, key nutrients, food strategies, and get advice tailored to your health profile.',
     category: 'guide',
     path: '/guide/nutri-guide',
-    accent: '#4a9e8e',
+    accent: '#2E7AD9',
     icon: 'heartPulse',
   },
   {
@@ -18,7 +18,7 @@ export const APPS = [
     description: 'Interactive nutrient database for adults. Browse essential nutrients with food sources, daily targets by age and sex, and an AI expert for personalized insights.',
     category: 'explorer',
     path: '/explorer/nutrient-explorer',
-    accent: '#6a8eaa',
+    accent: '#2E7AD9',
     icon: 'search',
   },
 ];

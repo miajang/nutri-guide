@@ -566,6 +566,7 @@ export default function NutriGuide() {
 
       {/* Header */}
       <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",padding:"12px 20px",position:"sticky",top:0,zIndex:100}}>
+        <div style={{marginBottom:6}}><BackToGallery/></div>
         <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
@@ -596,7 +597,7 @@ export default function NutriGuide() {
 
       <div style={{display:"flex",flex:1,minHeight:"calc(100vh - 57px)"}}>
         {/* Desktop sidebar nav */}
-        <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,alignSelf:"flex-start",height:"calc(100vh - 57px)",overflowY:"auto",display:"flex",flexDirection:"column"}}><div style={{padding:"0 16px 12px"}}><BackToGallery/></div><NavItems/></div>
+        <div className="ngNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:57,alignSelf:"flex-start",height:"calc(100vh - 57px)",overflowY:"auto",display:"flex",flexDirection:"column"}}><NavItems/></div>
 
         {/* Content — show only active section */}
         <div style={{flex:1,padding:28,minHeight:"calc(100vh - 57px)",background:t.contBg}}>
