@@ -539,9 +539,8 @@ export default function NutriGuide() {
             {suppAll.filter(n=>n.type==="bioactive").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Bioactive Compounds</div>{suppAll.filter(n=>n.type==="bioactive").map(n=><div key={n.id} style={{background:"#fff",borderRadius:12,padding:"16px 18px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</h4><p style={{fontSize:".86rem",color:"#555",lineHeight:1.65}}>{n.supp}</p></div>)}</>}
           </>
         ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>Food sources generally sufficient.</div>}
-        <div style={{background:"#fef4f4",borderRadius:12,padding:"16px 18px",marginTop:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
-          <h4 style={{fontSize:".85rem",fontWeight:700,color:"#c0392b",marginBottom:6}}>{"\u2695\uFE0F"} Important Safety Note</h4>
-          <p style={{fontSize:".83rem",color:"#7b241c",lineHeight:1.6}}>Supplements may interact with medications. Discuss with your provider before starting. This is educational, not medical advice.</p>
+        <div style={{marginTop:20,padding:"0 2px"}}>
+          <p style={{fontSize:".8rem",color:"#999",lineHeight:1.6}}>{"\u2695\uFE0F"} Supplements may interact with medications. Discuss with your provider before starting. This is educational, not medical advice.</p>
         </div>
       </>
     );
