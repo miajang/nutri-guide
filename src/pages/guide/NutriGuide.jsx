@@ -196,7 +196,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
 
   if(!isOpen){
     return (
-      <div onClick={onToggle} style={{background:"#fff",borderRadius:14,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,.06)",cursor:"pointer",transition:"box-shadow .2s, transform .2s",display:"flex",flexDirection:"column",height:"100%",border:"1px solid #f0f0f0"}}>
+      <div onClick={onToggle} style={{background:"#f8faf9",borderRadius:14,overflow:"hidden",cursor:"pointer",transition:"box-shadow .2s, transform .2s",display:"flex",flexDirection:"column",height:"100%"}}>
         <div style={{padding:"18px 18px 14px",flex:1,display:"flex",flexDirection:"column"}}>
           <div style={{fontSize:".95rem",fontWeight:600,color:"#333",marginBottom:6}}>{n.name}</div>
           <div style={{fontSize:".82rem",color:"#666",lineHeight:1.55,flex:1,display:"-webkit-box",WebkitLineClamp:3,WebkitBoxOrient:"vertical",overflow:"hidden"}}>{n.simple}</div>
@@ -211,7 +211,7 @@ const NutrientCard = ({n, selConds, sex, age, t, isOpen, onToggle}) => {
   }
 
   return (
-    <div style={{background:"#fff",borderRadius:14,overflow:"hidden",boxShadow:"0 3px 12px rgba(0,0,0,.08)",gridColumn:"1 / -1",border:`1.5px solid ${t.mid}`}}>
+    <div style={{background:"#f8faf9",borderRadius:14,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,.06)",gridColumn:"1 / -1",border:`1.5px solid ${t.mid}`}}>
       <div onClick={onToggle} style={{padding:"16px 18px",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"space-between",background:t.lt}}>
         <div style={{fontSize:".96rem",fontWeight:600,color:t.pri}}>{n.name}</div>
         <div style={{fontSize:".78rem",color:t.learn,fontWeight:600,cursor:"pointer"}}>Close</div>
@@ -517,17 +517,17 @@ export default function NutriGuide() {
           </div>
 
           {/* Connections */}
-          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:36,scrollMarginTop:20}}>
+          <div ref={el=>sectionRefs.current.connection=el} data-sec="connection" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="connection" color={t.pri}/> How Your Conditions Are Linked</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Many chronic conditions share the same underlying biological processes. Understanding these connections explains why improving one area of your nutrition can benefit multiple conditions at once.</p>
             {selConds.map(c=>(
-              <div key={c.id} style={{background:"#fff",borderRadius:12,padding:"18px 20px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+              <div key={c.id} style={{background:"#f8faf9",borderRadius:12,padding:"18px 20px",marginBottom:16}}>
                 <h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:7}}>{c.icon} {c.name}</h4>
                 {c.connection.map((p,i)=><p key={i} style={{fontSize:".87rem",color:"#555",lineHeight:1.7,marginTop:i>0?14:0}}>{p}</p>)}
               </div>
             ))}
             {sharedP.length>0&&(
-              <div style={{background:"#fff",borderRadius:12,marginBottom:16,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
+              <div style={{background:"#f8faf9",borderRadius:12,marginBottom:16,overflow:"hidden"}}>
                 <div onClick={()=>setPathOpen(!pathOpen)} style={{padding:"15px 20px",cursor:"pointer",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
                   <div style={{flex:1}}>
                     <div style={{fontSize:".96rem",fontWeight:700,color:"#333",display:"flex",alignItems:"center",gap:8}}>
@@ -554,7 +554,7 @@ export default function NutriGuide() {
           </div>
 
           {/* Nutrients */}
-          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:36,scrollMarginTop:20,paddingTop:14,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.nutrients=el} data-sec="nutrients" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions — most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
             {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} t={t} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</div></>}
@@ -562,30 +562,30 @@ export default function NutriGuide() {
           </div>
 
           {/* Foods to Limit */}
-          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:36,scrollMarginTop:20,paddingTop:14,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.limit=el} data-sec="limit" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited — frequency and portion size matter most.</p>
             {relF.length>0?(
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))",gap:14}}>
-                {relF.map((f,i)=><div key={i} style={{background:"#fff",borderRadius:14,padding:"18px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0"}}>
+                {relF.map((f,i)=><div key={i} style={{background:"#f8faf9",borderRadius:14,padding:"18px"}}>
                   <div style={{fontSize:".88rem",fontWeight:600,color:"#333",marginBottom:4}}>{f.food}</div>
                   <div style={{fontSize:".82rem",color:"#999",marginBottom:10,lineHeight:1.5}}>{f.reason}</div>
                   <div style={{display:"flex",flexWrap:"wrap",gap:6}}>{f.examples.map((ex,j)=><span key={j} style={{fontSize:".74rem",background:"#f7f7f7",color:"#666",borderRadius:6,padding:"3px 8px",fontWeight:500}}>{ex}</span>)}</div>
                 </div>)}
               </div>
-            ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>No specific foods to limit identified.</div>}
+            ):<div style={{background:"#f8faf9",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center"}}>No specific foods to limit identified.</div>}
           </div>
 
           {/* Supplements */}
-          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:36,scrollMarginTop:20,paddingTop:14,borderTop:"1px solid #e8eeec"}}>
+          <div ref={el=>sectionRefs.current.supplements=el} data-sec="supplements" style={{marginBottom:20,scrollMarginTop:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
             <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="supplements" color={t.pri}/> Supplements</div>
             <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Presented for educational awareness only — not a recommendation. Food-first is always the foundation. Supplements may be considered when food sources are consistently insufficient.</p>
             {suppAll.length>0?(
               <>
-                {suppAll.filter(n=>n.type==="nutrient").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="nutrient").map(n=><div key={n.id} style={{background:"#fff",borderRadius:14,padding:"18px 18px 16px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
-                {suppAll.filter(n=>n.type==="bioactive").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"22px 0 12px"}}>Bioactive Compounds</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="bioactive").map(n=><div key={n.id} style={{background:"#fff",borderRadius:14,padding:"18px 18px 16px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",border:"1px solid #f0f0f0",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
+                {suppAll.filter(n=>n.type==="nutrient").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 12px"}}>Essential Nutrients</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="nutrient").map(n=><div key={n.id} style={{background:"#f8faf9",borderRadius:14,padding:"18px 18px 16px",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
+                {suppAll.filter(n=>n.type==="bioactive").length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"22px 0 12px"}}>Bioactive Compounds</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill, minmax(240px, 1fr))",gap:14}}>{suppAll.filter(n=>n.type==="bioactive").map(n=><div key={n.id} style={{background:"#f8faf9",borderRadius:14,padding:"18px 18px 16px",display:"flex",flexDirection:"column"}}><h4 style={{fontSize:".9rem",fontWeight:600,color:"#333",marginBottom:8}}>{n.name}</h4><p style={{fontSize:".84rem",color:"#555",lineHeight:1.6,flex:1}}>{n.supp}</p></div>)}</div></>}
               </>
-            ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>Food sources generally sufficient.</div>}
+            ):<div style={{background:"#f8faf9",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center"}}>Food sources generally sufficient.</div>}
             <div style={{background:"#fef4f4",borderRadius:12,padding:"16px 18px",marginTop:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
               <h4 style={{fontSize:".85rem",fontWeight:700,color:"#c0392b",marginBottom:6}}>{"⚕️"} Important Safety Note</h4>
               <p style={{fontSize:".83rem",color:"#7b241c",lineHeight:1.6}}>Supplements may interact with medications. Discuss with your provider before starting. This is educational, not medical advice.</p>
