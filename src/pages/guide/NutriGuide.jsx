@@ -622,7 +622,7 @@ export default function NutriGuide() {
       </div>
 
       {/* Mobile bottom tab bar with labels */}
-      <div className="ngBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,height:60,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingBottom:"env(safe-area-inset-bottom)"}}>
+      <div className="ngBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,height:60,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingBottom:"calc(env(safe-area-inset-bottom) + 10px)"}}>
         {navSections.map(s=>(
           <button key={s.id} onClick={()=>setActiveNav(s.id)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,transition:"all .15s",padding:0}} aria-label={s.labelLong}>
             <NavIcon type={s.id} color={activeNav===s.id?t.pri:"#999"}/>

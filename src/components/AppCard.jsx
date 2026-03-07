@@ -29,7 +29,8 @@ export default function AppCard({ app }) {
   return (
     <button
       onClick={() => navigate(app.path)}
-      className="group text-left bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all p-5 flex flex-col gap-3"
+      className="group text-left bg-white rounded-lg border border-gray-100 hover:border-gray-200 transition-all p-5 flex flex-col gap-3"
+      style={{ boxShadow: "0 2px 12px rgba(0,0,0,.08)" }}
     >
       <div
         className="w-9 h-9 rounded-md flex items-center justify-center transition-colors"
