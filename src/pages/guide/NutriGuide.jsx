@@ -550,7 +550,7 @@ export default function NutriGuide() {
   const NavItems = () => (
     <>
       {navSections.map(s=>(
-        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?700:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
+        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?600:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
           <span style={{width:18,height:18,display:"flex",alignItems:"center",justifyContent:"center"}}><NavIcon type={s.id} color={activeNav===s.id?t.pri:"#666"}/></span>
           {s.labelLong}
         </div>
