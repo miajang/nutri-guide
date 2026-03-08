@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 // ─── NUTRIENTS DATA (32 nutrients: Vitamins, Minerals, Macronutrients, Phytonutrients) ───
 const nutrients=[
@@ -42,20 +41,8 @@ const catNames = {Vitamin:"Vitamins",Mineral:"Minerals",Macronutrient:"Macronutr
 const foodTypes = ["all","Vegetables","Fruits","Dairy","Meat","Seafood","Legumes","Grains","Nuts","Eggs","Oils","Other"];
 const foodLabels = {all:"All Foods",Vegetables:"Vegetables",Fruits:"Fruits",Dairy:"Dairy",Meat:"Meat & Poultry",Seafood:"Seafood",Legumes:"Legumes",Grains:"Grains & Seeds",Nuts:"Nuts",Eggs:"Eggs",Oils:"Oils & Fats",Other:"Other"};
 
-const themes = {
-  sage:{primary:"#4a9e8e",light:"#f5faf8",mid:"#c2ddd6",dark:"#3a8a7a",badgeBg:"#eaf5f1",badgeText:"#3a7a6a",hoverBg:"#eef6f3",contentBg:"#f2f4f8"},
-  slate:{primary:"#6a8eaa",light:"#f5f8fb",mid:"#bcd5ee",dark:"#5a7e9a",badgeBg:"#eaf0f6",badgeText:"#4a6e88",hoverBg:"#edf2f7",contentBg:"#f2f4f8"},
-  clay:{primary:"#c2805a",light:"#fdf8f5",mid:"#e6cbb8",dark:"#a8684a",badgeBg:"#f8efe8",badgeText:"#8a5a3a",hoverBg:"#f9f2ec",contentBg:"#f2f4f8"}
-};
-
-// ─── SETTINGS ICON SVG ───
-const GearIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-);
-const PrintIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-);
-
+// ─── BLUE COLOR PALETTE ───
+const t = { pri:"#2E7AD9", lt:"#EAF2FB", mid:"#ABCBF0", dk:"#1a5ba0", badge:"#D5E5F7", badgeTxt:"#1a5ba0", learn:"#5895E1", contentBg:"#f2f4f8" };
 // ─── AI CHAT HELPERS ───
 const CHAT_SYS = `You are NutrientExplorer AI, a nutrition knowledge assistant helping adults 50+ understand nutrients.
 
@@ -124,8 +111,10 @@ const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
 
   if(!isOpen) return null;
   return (
-    <div style={{position:"fixed",top:57,right:0,width:390,maxWidth:"100vw",height:"min(480px,75vh)",background:"#fff",borderBottomLeftRadius:16,boxShadow:"-4px 4px 24px rgba(0,0,0,.12)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
-      <div style={{padding:"14px 18px",background:t.primary,borderBottom:"none",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+    <>
+    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
+    <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{padding:"14px 18px",background:t.pri,borderBottom:"none",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
         <div><div style={{fontWeight:500,fontSize:".92rem",color:"#fff"}}>Ask Expert</div><div style={{fontSize:".72rem",color:"rgba(255,255,255,.7)"}}>Nutrient Explorer {"\u00B7"} AI Guidance</div></div>
         <button onClick={onClose} style={{background:"none",border:"none",color:"#fff",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
       </div>
@@ -134,57 +123,57 @@ const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
           <div>
             <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.light,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
             </div>
           </div>
         )}
         {msgs.map((m,i)=>(
           <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badgeBg:t.light,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
               {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
             </div>
           </div>
         ))}
-        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.light}}><Spinner/></div></div>}
+        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.lt}}><Spinner/></div></div>}
         <div ref={endRef}/>
       </div>
       <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
         <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrients..." style={{flex:1,padding:"10px 14px",border:`1.5px solid ${t.mid}`,borderRadius:10,fontSize:".88rem",outline:"none"}}/>
-        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.primary,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
       </div>
     </div>
+    </>
   );
 };
 
+// ─── NAV ICONS FOR BOTTOM BAR ───
+const CatNavIcon = ({type,color}) => {
+  if(type==="Vitamin") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.5 2.5a6 6 0 0 1 3 0"/><path d="M12 2v4"/><circle cx="12" cy="14" r="7"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>;
+  if(type==="Mineral") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>;
+  if(type==="Macronutrient") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18"/><path d="M5.5 8c2-3 4.5-4 6.5-4s4.5 1 6.5 4"/><path d="M5.5 16c2 3 4.5 4 6.5 4s4.5-1 6.5-4"/></svg>;
+  if(type==="Phytonutrient") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8c.7-1 1-2.2 1-3.5C18 2.5 16.5 1 14.5 1c-1.3 0-2.5.5-3 1.5C11 1.5 9.8 1 8.5 1 6.5 1 5 2.5 5 4.5c0 1.3.3 2.5 1 3.5"/><path d="M11.5 8v13"/><path d="M7 12c2-1.5 4.5-1.5 4.5-1.5s2.5 0 4.5 1.5"/></svg>;
+  return null;
+};
+
+const catNavLabels = {Vitamin:"Vitamins",Mineral:"Minerals",Macronutrient:"Macro",Phytonutrient:"Phyto"};
+
 // ─── MAIN APP ───
 export default function NutrientExplorer() {
-  const nav = useNavigate();
   const [activeCat, setActiveCat] = useState("all");
   const [foodFilter, setFoodFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [sex, setSex] = useState("female");
   const [age, setAge] = useState("50-60");
-  const [theme, setTheme] = useState("sage");
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [modalNutrient, setModalNutrient] = useState(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const t = themes[theme];
-
   useEffect(() => { document.title = "Nutrient Explorer"; }, []);
 
   useEffect(() => {
-    const ck = () => setIsMobile(window.innerWidth <= 820);
+    const ck = () => setIsMobile(window.innerWidth <= 768);
     ck(); window.addEventListener("resize", ck);
     return () => window.removeEventListener("resize", ck);
-  }, []);
-
-  useEffect(() => {
-    const h = (e) => { if (!e.target.closest(".settings-wrap")) setSettingsOpen(false); };
-    document.addEventListener("click", h);
-    return () => document.removeEventListener("click", h);
   }, []);
 
   const filtered = nutrients.filter((n) => {
@@ -199,98 +188,57 @@ export default function NutrientExplorer() {
   catOrder.forEach((c) => { grouped[c] = []; });
   filtered.forEach((n) => { (grouped[n.cat] || (grouped[n.cat] = [])).push(n); });
 
-  const navigateCat = (cat) => { setActiveCat(cat); setDrawerOpen(false); };
+  const navigateCat = (cat) => { setActiveCat(cat); };
 
-  // ── SIDEBAR CONTENT ──
-  const sidebarContent = (
-    <div>
-      <div style={{ fontSize: ".68rem", textTransform: "uppercase", letterSpacing: ".08em", color: "#aaa", fontWeight: 700, padding: "8px 16px 4px" }}>Categories</div>
-      <CatBtn label="All Nutrients" active={activeCat === "all"} color={t.primary} onClick={() => navigateCat("all")} />
+  // ── DESKTOP SIDEBAR NAV ──
+  const NavItems = () => (
+    <>
+      <CatBtn label="All Nutrients" active={activeCat==="all"} color={t.pri} onClick={()=>navigateCat("all")} />
       {catOrder.map((c) => (
-        <CatBtn key={c} label={catNames[c]} active={activeCat === c} color={t.primary} onClick={() => navigateCat(c)} />
+        <CatBtn key={c} label={catNames[c]} active={activeCat===c} color={t.pri} onClick={()=>navigateCat(c)} />
       ))}
-    </div>
+    </>
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555" }}>
-      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    <div style={{ minHeight: "100vh", background: "#fff", fontFamily: "'Segoe UI',system-ui,sans-serif", color: "#555", paddingBottom: 60 }}>
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}} @media(max-width:768px){.neNavD{display:none!important}.neBottomBar{display:flex!important}}`}</style>
       {/* ── HEADER ── */}
       <header style={{background:"#fff",borderBottom:"1px solid #e8eeec",position:"sticky",top:0,zIndex:100,padding:"12px 20px"}}>
-        <div onClick={()=>nav('/')} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:".72rem",color:"#999",cursor:"pointer",marginBottom:4}}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>All Apps</div>
-        <div style={{display:"grid",gridTemplateColumns:isMobile?"auto 1fr":"auto 1fr auto",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
+        <div style={{display:"grid",gridTemplateColumns:"auto 1fr",gridTemplateRows:"auto auto",columnGap:16,rowGap:4}}>
           {/* Logo cell - merged rows */}
           <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end"}}>
             <div style={{display:"flex",alignItems:"center",gap:7}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.primary}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.pri}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
               <div>
-                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:t.primary}}>Nutrient</span><span style={{fontWeight:300,color:t.primary}}>Explorer</span></div>
+                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:t.pri}}>Nutrient</span><span style={{fontWeight:300,color:t.pri}}>Explorer</span></div>
                 <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Your Nutrition Library</div>
               </div>
             </div>
           </div>
-          {/* Search cell - merged rows (desktop only) */}
-          {!isMobile && (
-            <div style={{gridRow:"1/3",display:"flex",alignItems:"flex-end",paddingLeft:10}}>
-              <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:"100%",maxWidth:360,padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
-            </div>
-          )}
-          {/* Right column row 1 - settings */}
-          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:2}}>
-            <div className="settings-wrap" style={{position:"relative"}} onClick={(e)=>e.stopPropagation()}>
-              <button onClick={()=>setSettingsOpen(!settingsOpen)} style={{width:34,height:34,borderRadius:8,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",color:t.primary}}><GearIcon/></button>
-              {settingsOpen && (
-                <div style={{position:"absolute",right:0,top:40,background:"#fff",border:"1px solid #e4e8e6",borderRadius:10,padding:"12px 14px",boxShadow:"0 6px 24px rgba(0,0,0,.1)",whiteSpace:"nowrap",zIndex:200}}>
-                  <div style={{fontSize:".68rem",color:"#aaa",fontWeight:700,textTransform:"uppercase",letterSpacing:".07em",marginBottom:8}}>Theme Color</div>
-                  <div style={{display:"flex",gap:12}}>
-                    {Object.entries(themes).map(([k,v])=>(
-                      <div key={k} onClick={()=>{setTheme(k);setSettingsOpen(false);}} style={{width:26,height:26,borderRadius:"50%",background:v.primary,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",transform:theme===k?"scale(1.15)":"none",transition:"transform .15s"}}>
-                        {theme===k&&<span style={{color:"#fff",fontSize:".65rem",fontWeight:800}}>{"\u2713"}</span>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            {isMobile && (
-              <button onClick={()=>setDrawerOpen(true)} style={{display:"flex",flexDirection:"column",gap:4,width:34,height:34,background:"#f5f8f7",border:"1.5px solid #e0e8e5",borderRadius:8,cursor:"pointer",padding:7,alignItems:"stretch",justifyContent:"center",flexShrink:0}}>
-                <span style={{height:2,background:"#888",borderRadius:2}}/><span style={{height:2,background:"#888",borderRadius:2}}/><span style={{height:2,background:"#888",borderRadius:2}}/>
-              </button>
-            )}
-          </div>
+          {/* Right column row 1 - date placeholder */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",gap:2}}/>
           {/* Right column row 2 - Ask Expert */}
           <div style={{display:"flex",alignItems:"center",justifyContent:"flex-end",paddingRight:8}}>
-            <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.primary,fontSize:".8rem",fontWeight:600,cursor:"pointer"}}>
-              <NavIcon type="chat" color={t.primary}/> Ask Expert
+            <span onClick={()=>setChatOpen(true)} style={{display:"flex",alignItems:"center",gap:4,color:t.pri,fontSize:".8rem",fontWeight:600,cursor:"pointer"}}>
+              <NavIcon type="chat" color={t.pri}/> Ask Expert
             </span>
           </div>
         </div>
         {isMobile && (
           <div style={{marginTop:8}}>
-            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:"100%",padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
+            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{width:"100%",padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
           </div>
         )}
       </header>
 
-      {/* ── MOBILE DRAWER ── */}
-      {drawerOpen && <div onClick={() => setDrawerOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.3)", zIndex: 300 }} />}
-      <div style={{ position: "fixed", top: 0, left: drawerOpen ? 0 : -280, width: 260, height: "100vh", background: "#fff", zIndex: 400, boxShadow: "4px 0 20px rgba(0,0,0,.12)", transition: "left .25s", overflowY: "auto", padding: "14px 0" }}>
-        <div style={{ padding: "10px 16px", borderBottom: "1px solid #eaf0ed", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-          <span style={{ fontSize: ".84rem", fontWeight: 700, color: "#333" }}>Categories</span>
-          <button onClick={() => setDrawerOpen(false)} style={{ width: 26, height: 26, borderRadius: 6, background: "#f5f7f6", border: "1px solid #e4e8e6", cursor: "pointer", fontSize: ".85rem", color: "#888", display: "flex", alignItems: "center", justifyContent: "center" }}>{"\u2715"}</button>
-        </div>
-        {sidebarContent}
-      </div>
-
       {/* ── MAIN LAYOUT ── */}
       <div style={{ display: "flex", minHeight: "calc(100vh - 53px)" }}>
-        {!isMobile && (
-          <aside style={{ width: 190, minWidth: 190, background: "#fff", borderRight: "1px solid #eaf0ed", position: "sticky", top: 53, height: "calc(100vh - 53px)", overflowY: "auto", padding: "14px 0" }}>
-            {sidebarContent}
-          </aside>
-        )}
+        {/* Desktop sidebar */}
+        <div className="neNavD" style={{width:220,minWidth:220,background:"#fff",borderRight:"1px solid #e8eeec",padding:"12px 0",position:"sticky",top:53,alignSelf:"flex-start",height:"calc(100vh - 53px)",overflowY:"auto",display:"flex",flexDirection:"column"}}><NavItems/></div>
+
         <main style={{ flex: 1, background: t.contentBg, overflowY: "auto" }}>
-          {/* Profile bar */}
+          {/* Profile bar + search (desktop) */}
           <div style={{ background: "#fff", borderBottom: "1px solid #eaf0ed", padding: "10px 24px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
             <label style={{ fontSize: ".74rem", fontWeight: 600, color: "#888", textTransform: "uppercase", letterSpacing: ".05em" }}>
               Sex <select value={sex} onChange={(e) => setSex(e.target.value)} style={{ padding: "5px 8px", border: "1.5px solid #dce4e1", borderRadius: 6, fontSize: ".84rem", color: "#555", background: "#fff", outline: "none", marginLeft: 4 }}>
@@ -302,7 +250,11 @@ export default function NutrientExplorer() {
                 <option value="50-60">50-60</option><option value="61-70">61-70</option><option value="71+">71+</option>
               </select>
             </label>
-            {/* count removed */}
+            {!isMobile && (
+              <div style={{marginLeft:"auto"}}>
+                <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{width:280,padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
+              </div>
+            )}
           </div>
           {/* Content */}
           <div style={{ padding: "20px 24px" }}>
@@ -311,8 +263,8 @@ export default function NutrientExplorer() {
               const items = grouped[cat];
               if (!items || !items.length) return null;
               return (
-                <div key={cat} style={{marginBottom:20,background:"#fff",borderRadius:12,padding:"22px 24px",boxShadow:"0 1px 3px rgba(0,0,0,.04)"}}>
-                  <div style={{ fontSize: ".74rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12, color: t.primary }}>{catNames[cat]}</div>
+                <div key={cat} style={{marginBottom:20}}>
+                  <div style={{ fontSize: ".74rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", marginBottom: 12, color: t.pri }}>{catNames[cat]}</div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 12 }}>
                     {items.map((n) => <NutrientCard key={n.id} nutrient={n} theme={t} onClick={() => setModalNutrient(n)} />)}
                   </div>
@@ -322,8 +274,8 @@ export default function NutrientExplorer() {
           {/* Footer */}
           <div style={{padding:"16px 0",marginTop:12,textAlign:"center"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.primary}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
-              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:t.primary}}>Nutrient</span><span style={{fontWeight:300,color:t.primary}}>Explorer</span></span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.pri}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:t.pri}}>Nutrient</span><span style={{fontWeight:300,color:t.pri}}>Explorer</span></span>
               <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
               <span style={{fontSize:".68rem",color:"#aaa"}}>Your Nutrition Library</span>
             </div>
@@ -331,6 +283,20 @@ export default function NutrientExplorer() {
           </div>
           </div>
         </main>
+      </div>
+
+      {/* ── MOBILE BOTTOM NAV ── */}
+      <div className="neBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:8,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)"}}>
+        <button onClick={()=>navigateCat("all")} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:0}} aria-label="All Nutrients">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={activeCat==="all"?t.pri:"#999"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+          <span style={{fontSize:".62rem",fontWeight:activeCat==="all"?600:400,color:activeCat==="all"?t.pri:"#999",letterSpacing:".01em"}}>All</span>
+        </button>
+        {catOrder.map(c=>(
+          <button key={c} onClick={()=>navigateCat(c)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:0}} aria-label={catNames[c]}>
+            <CatNavIcon type={c} color={activeCat===c?t.pri:"#999"}/>
+            <span style={{fontSize:".62rem",fontWeight:activeCat===c?600:400,color:activeCat===c?t.pri:"#999",letterSpacing:".01em"}}>{catNavLabels[c]}</span>
+          </button>
+        ))}
       </div>
 
       {/* ── MODAL ── */}
@@ -345,7 +311,7 @@ export default function NutrientExplorer() {
 // ─── SIDEBAR CATEGORY BUTTON ───
 function CatBtn({ label, active, color, onClick }) {
   return (
-    <button onClick={onClick} style={{ display: "block", width: "100%", textAlign: "left", padding: "8px 16px", border: "none", background: "none", cursor: "pointer", fontSize: ".84rem", color: active ? color : "#888", fontWeight: active ? 600 : 400, borderLeft: `3px solid ${active ? color : "transparent"}`, transition: "all .15s" }}>{label}</button>
+    <button onClick={onClick} style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 16px", border: "none", background: "none", cursor: "pointer", fontSize: ".87rem", color: active ? color : "#777", fontWeight: active ? 500 : 400, borderLeft: `3px solid ${active ? color : "transparent"}`, transition: "all .15s" }}>{label}</button>
   );
 }
 
@@ -405,7 +371,7 @@ function NutrientModal({ nutrient, sex, age, theme, onClose }) {
           <div style={{ position: "absolute", right: 18, top: 18, display: "flex", alignItems: "center", gap: 6 }}>
             <button onClick={onClose} style={{ background: "#f5f7f6", border: "1px solid #e4e8e6", borderRadius: "50%", width: 30, height: 30, cursor: "pointer", fontSize: ".95rem", color: "#888", display: "flex", alignItems: "center", justifyContent: "center" }}>{"\u2715"}</button>
           </div>
-          <div style={{ fontSize: ".68rem", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, color: theme.primary, marginBottom: 2 }}>{n.cat}</div>
+          <div style={{ fontSize: ".68rem", textTransform: "uppercase", letterSpacing: ".07em", fontWeight: 600, color: theme.pri, marginBottom: 2 }}>{n.cat}</div>
           <div style={{ fontSize: "1.15rem", fontWeight: 600, color: "#555" }}>{n.name}</div>
           {n.aka && <div style={{ fontSize: ".8rem", color: "#666", marginTop: 2 }}>Also known as: {n.aka}</div>}
         </div>
@@ -414,7 +380,7 @@ function NutrientModal({ nutrient, sex, age, theme, onClose }) {
           <Sec title="Health Benefits">{n.benefits}</Sec>
           <div style={{ padding: "16px 0" }}>
             <div style={{ fontSize: ".78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", color: "#888", marginBottom: 6 }}>Daily Target</div>
-            <div style={{ fontSize: ".86rem", color: "#555", lineHeight: 1.65 }}>{sexLabel}, {age}: <span style={{ color: theme.primary, fontWeight: 600 }}>{rv}</span></div>
+            <div style={{ fontSize: ".86rem", color: "#555", lineHeight: 1.65 }}>{sexLabel}, {age}: <span style={{ color: theme.pri, fontWeight: 600 }}>{rv}</span></div>
           </div>
           <div style={{ padding: "16px 0" }}>
             <div style={{ fontSize: ".78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", color: "#888", marginBottom: 6 }}>Food Sources</div>
