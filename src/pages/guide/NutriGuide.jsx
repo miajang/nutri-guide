@@ -396,15 +396,15 @@ const SettingsPanel = ({isOpen, onClose, sex, setSex, age, setAge, selected, tog
 const navSections=[{id:"connection",label:"Mechanisms",labelLong:"How Conditions Are Linked"},{id:"nutrients",label:"Nutrients",labelLong:"Key Nutrients & Foods"},{id:"limit",label:"Limit",labelLong:"Foods to Limit"},{id:"supplements",label:"Supplements",labelLong:"Supplements"}];
 
 export default function NutriGuide() {
-  const [sex,setSex]=useState("female");
-  const [age,setAge]=useState("50-60");
-  const [selected,setSelected]=useState(new Set());
+  const [sex,setSex]=useState(()=>localStorage.getItem("ng-sex")||"female");
+  const [age,setAge]=useState(()=>localStorage.getItem("ng-age")||"50-60");
+  const [selected,setSelected]=useState(()=>{try{const s=localStorage.getItem("ng-selected");return s?new Set(JSON.parse(s)):new Set();}catch(e){return new Set();}});
   const [settingsOpen,setSettingsOpen]=useState(false);
   const [activeNav,setActiveNav]=useState("connection");
   const [openNuts,setOpenNuts]=useState(new Set());
   const [pathOpen,setPathOpen]=useState(false);
   const [chatOpen,setChatOpen]=useState(false);
-  const [hasOnboarded,setHasOnboarded]=useState(false);
+  const [hasOnboarded,setHasOnboarded]=useState(()=>localStorage.getItem("ng-onboarded")==="true");
 
   const toggleCond=(id)=>{
     setSelected(prev=>{
@@ -414,6 +414,10 @@ export default function NutriGuide() {
       return next;
     });
   };
+
+  useEffect(()=>{localStorage.setItem("ng-sex",sex);},[sex]);
+  useEffect(()=>{localStorage.setItem("ng-age",age);},[age]);
+  useEffect(()=>{localStorage.setItem("ng-selected",JSON.stringify([...selected]));},[selected]);
 
   const selConds=conditions.filter(c=>selected.has(c.id));
   const selIds=[...selected];
@@ -467,7 +471,7 @@ export default function NutriGuide() {
               );})}
             </div>
           </div>
-          <button disabled={!selected.size} onClick={()=>{setHasOnboarded(true);setActiveNav("connection");setOpenNuts(new Set());setPathOpen(false);setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
+          <button disabled={!selected.size} onClick={()=>{localStorage.setItem("ng-onboarded","true");setHasOnboarded(true);setActiveNav("connection");setOpenNuts(new Set());setPathOpen(false);setChatOpen(false);}} style={{background:selected.size?t.pri:t.mid,color:"#fff",border:"none",padding:"12px 32px",borderRadius:8,fontSize:".95rem",fontWeight:700,cursor:selected.size?"pointer":"not-allowed",opacity:selected.size?1:.6,transition:"background .15s"}}>{"View My Nutrition Guidance \u2192"}</button>
         </div>
       </div>
     );
