@@ -85,6 +85,7 @@ const foodsToLimit=[
    == END: HWI Brand Colors == */
 const t = {
   pri: "#2E7AD9",
+  btn: "#5895E1",
   teal: "#47ADC3",
   orange: "#F79520",
   lt: "#EAF2FB",
@@ -103,8 +104,8 @@ const mutualExclusions={prediabetes:"dm2",dm2:"prediabetes"};
 /* == START: SVG Nav Icons ==
    connection, nutrients, limit, supplements, chat, settings
    == END: SVG Nav Icons == */
-const NavIcon = ({type, color}) => {
-  const s = {width:16,height:16,stroke:color,fill:"none",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round"};
+const NavIcon = ({type, color, size, weight}) => {
+  const s = {width:size||16,height:size||16,stroke:color,fill:"none",strokeWidth:weight||2,strokeLinecap:"round",strokeLinejoin:"round"};
   if(type==="connection") return <svg viewBox="0 0 24 24" style={s}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
   if(type==="nutrients") return <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>;
   if(type==="limit") return <svg viewBox="0 0 24 24" style={s}><circle cx="12" cy="12" r="9"/><line x1="5.7" y1="5.7" x2="18.3" y2="18.3"/></svg>;
@@ -209,11 +210,13 @@ const NutrientCard = ({n, selConds, sex, age, isOpen, onToggle}) => {
     <div style={{background:"#fff",borderRadius:12,marginBottom:16,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
       <div onClick={onToggle} style={{padding:"15px 18px",cursor:"pointer",display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:12}}>
         <div style={{flex:1}}>
-          <div style={{fontSize:".96rem",fontWeight:600,color:"#333"}}>{n.name}</div>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+            <div style={{fontSize:".96rem",fontWeight:600,color:"#333"}}>{n.name}</div>
+            <span style={{fontSize:".72rem",color:t.pri,flexShrink:0}}>{isOpen?"\u25B2":"\u25BC"}</span>
+          </div>
           <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>{n.simple}</div>
           <div style={{fontSize:".72rem",color:"#999",marginTop:6}}>Relevant to: {rel.map(c=>`${c.icon} ${c.name}`).join(" \u00B7 ")}</div>
         </div>
-        <div style={{fontSize:".78rem",color:"#999",fontWeight:600,whiteSpace:"nowrap",flexShrink:0,marginTop:2}}>{isOpen?"Show less \u25B2":"Learn more \u25BC"}</div>
       </div>
       {isOpen&&(
         <div style={{padding:"0 18px 18px"}}>
@@ -236,13 +239,14 @@ const NutrientCard = ({n, selConds, sex, age, isOpen, onToggle}) => {
             </div>
             {n.foodAction&&<div style={{marginTop:16,fontSize:".84rem",color:"#555",fontWeight:500,lineHeight:1.55,paddingLeft:10,borderLeft:`3px solid ${t.pri}`,display:"inline-block"}}>{n.foodAction}</div>}
             <div style={{marginTop:16}}>
-              <button onClick={doDive} style={{background:dive?t.hover:t.badge,color:t.badgeTxt,border:`1px solid ${t.mid}`,borderRadius:8,padding:"8px 16px",fontSize:".82rem",fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
-                <span style={{fontSize:".9rem"}}>{dive?"\u2715":"\u2728"}</span> {dive?"Close Deep Dive":"AI Deep Dive \u2014 Personalized for Your Conditions"}
-              </button>
+              {!dive&&<button onClick={doDive} style={{background:"#EEF3FA",color:"#777",border:"none",borderRadius:8,padding:"8px 16px",fontSize:".82rem",fontWeight:400,cursor:"pointer",display:"flex",alignItems:"center",gap:6,transition:"all .15s"}}>
+                <span style={{fontSize:".9rem"}}>{"\u2728"}</span> AI Deep Dive — Personalized for Your Conditions
+              </button>}
             </div>
             {loading&&<Spinner/>}
             {dive&&!loading&&(
-              <div style={{marginTop:12,padding:16,background:`linear-gradient(135deg, ${t.lt}, #fff)`,borderRadius:10,border:`1px solid ${t.mid}`,fontSize:".86rem",color:"#444",lineHeight:1.75}}>
+              <div style={{position:"relative",marginTop:12,padding:16,background:t.lt,borderRadius:10,fontSize:".86rem",color:"#444",lineHeight:1.75}}>
+                <button onClick={()=>setDive(null)} style={{position:"absolute",top:10,right:10,background:"none",border:"none",cursor:"pointer",fontSize:".82rem",color:"#999",padding:4,lineHeight:1}} aria-label="Close">{"\u2715"}</button>
                 <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,marginBottom:8,display:"flex",alignItems:"center",gap:4}}>
                   {"\u2728"} AI-Generated Personalized Guidance
                 </div>
@@ -289,39 +293,40 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients}) => {
     return parts.map((p,i)=>i%2===1?<strong key={i}>{p}</strong>:<span key={i}>{p}</span>);
   };
 
-  const suggestions=["What should I eat for breakfast?","Best anti-inflammatory foods for me?","Can I eat bananas?","How do my conditions interact nutritionally?"];
+  const suggestions=["What should I eat for breakfast?","Best anti-inflammatory foods for me?","How do my conditions interact nutritionally?"];
 
   if(!isOpen) return null;
   return (
     <>
       <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
-      <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{position:"fixed",top:100,right:24,width:"min(420px, 92vw)",maxHeight:"min(620px, 80vh)",height:"auto",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
         <div style={{padding:"14px 18px",background:t.pri,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
           <div><div style={{fontWeight:500,fontSize:".92rem",color:"#fff"}}>Ask Expert</div><div style={{fontSize:".72rem",color:"rgba(255,255,255,.7)"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
           <button onClick={onClose} style={{background:"none",border:"none",color:"#fff",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
         </div>
-        <div style={{flex:1,overflowY:"auto",padding:16}}>
+        <div style={{flex:"0 1 auto",overflowY:"auto",padding:16}}>
           {msgs.length===0&&(
             <div>
-              <p style={{fontSize:".85rem",color:"#777",marginBottom:12,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
+              <p style={{fontSize:".85rem",color:"#777",marginBottom:8,marginTop:4,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor, personalized for your conditions. Try asking:"}</p>
               <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#555",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+                {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#555",cursor:"pointer",textAlign:"left",fontWeight:400}}>{s}</button>)}
               </div>
+              <div style={{height:12}}/>
             </div>
           )}
           {msgs.map((m,i)=>(
-            <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-              <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:m.role==="user"?t.dk:"#444",fontSize:".86rem",lineHeight:1.7}}>
+            <div key={i} data-chat-msg={m.role} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+              <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.hover:"#F7F7F8",color:m.role==="user"?"#444":"#555",fontSize:".86rem",lineHeight:1.7}}>
                 {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
               </div>
             </div>
           ))}
-          {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.lt}}><Spinner/></div></div>}
+          {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:"#F7F7F8"}}><Spinner/></div></div>}
           <div ref={endRef}/>
         </div>
         <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
           <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrition..." style={{flex:1,padding:"10px 14px",border:"1px solid #ddd",borderRadius:10,fontSize:".88rem",outline:"none"}}/>
-          <button onClick={send} disabled={!input.trim()||loading} style={{background:t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+          <button onClick={send} disabled={!input.trim()||loading} style={{background:t.btn||t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:600,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
         </div>
       </div>
     </>
@@ -393,7 +398,7 @@ const SettingsPanel = ({isOpen, onClose, sex, setSex, age, setAge, selected, tog
    Nav: connections, nutrients, foods to limit, supplements
    Show/hide sections (no scroll observer)
    == END: Main App == */
-const navSections=[{id:"connection",label:"Mechanisms",labelLong:"How Conditions Are Linked"},{id:"nutrients",label:"Nutrients",labelLong:"Key Nutrients & Foods"},{id:"limit",label:"Limit",labelLong:"Foods to Limit"},{id:"supplements",label:"Supplements",labelLong:"Supplements"}];
+const navSections=[{id:"connection",label:"Mechanisms",labelLong:"How Conditions Are Linked"},{id:"nutrients",label:"Nutrients",labelLong:"Nutrients & Foods"},{id:"supplements",label:"Supplements",labelLong:"Supplements"}];
 
 export default function NutriGuide() {
   const [sex,setSex]=useState(()=>localStorage.getItem("ng-sex")||"female");
@@ -442,8 +447,8 @@ export default function NutriGuide() {
               <circle cx="24" cy="24" r="2.8" fill="#fff"/>
             </svg>
             <div>
-              <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:300,color:"#2E7AD9"}}>Guide</span></div>
-              <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
+              <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:550,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:350,color:"#2E7AD9"}}>Guide</span></div>
+              <div style={{fontSize:".72rem",color:"#777",marginTop:1}}>Personalized Nutrition Guidance</div>
             </div>
           </div>
         </header>
@@ -492,13 +497,15 @@ export default function NutriGuide() {
         {sharedP.length>0&&(
           <div style={{background:"#fff",borderRadius:12,marginBottom:16,overflow:"hidden",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
             <div onClick={()=>setPathOpen(!pathOpen)} style={{padding:"15px 20px",cursor:"pointer"}}>
-              <div style={{fontSize:".96rem",fontWeight:700,color:"#333",display:"flex",alignItems:"center",gap:8}}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={t.pri} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M10 13l-3.5 4M14 13l3.5 4"/></svg>
-                Shared Biological Pathways
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+                <div style={{fontSize:".96rem",fontWeight:700,color:"#333",display:"flex",alignItems:"center",gap:8}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={t.pri} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M12 7v4M10 13l-3.5 4M14 13l3.5 4"/></svg>
+                  Shared Biological Pathways
+                </div>
+                <span style={{fontSize:".72rem",color:t.pri,flexShrink:0}}>{pathOpen?"\u25B2":"\u25BC"}</span>
               </div>
               <div style={{fontSize:".84rem",color:"#555",marginTop:3,lineHeight:1.5}}>Your conditions share key biological pathways. Improving them through nutrition benefits all your health concerns.</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:8,marginTop:8}}>{sharedP.map(p=><span key={p} style={{background:t.badge,color:t.badgeTxt,borderRadius:20,padding:"4px 12px",fontSize:".78rem",fontWeight:600}}>{p}</span>)}</div>
-              <div style={{textAlign:"right",marginTop:10}}><span style={{fontSize:".78rem",color:"#999",fontWeight:600}}>{pathOpen?"Show less \u25B2":"Learn more \u25BC"}</span></div>
             </div>
             {pathOpen&&(
               <div style={{padding:"16px 20px 4px",borderTop:"1px solid #e8eeec"}}>
@@ -516,21 +523,17 @@ export default function NutriGuide() {
     );
     if(id==="nutrients") return (
       <>
-        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Key Nutrients & Foods</div>
+        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="nutrients" color={t.pri}/> Nutrients & Foods</div>
         <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Listed by relevance to your conditions \u2014 most applicable first. Expand any item to see your personalized daily target and food sources. Profile: <strong>{sex==="female"?"Female":"Male"}, {age}</strong>.</p>
         {essentials.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Essential Nutrients</div>{essentials.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</>}
         {bioactives.length>0&&<><div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"18px 0 8px"}}>Bioactive Compounds</div>{bioactives.map(n=><NutrientCard key={n.id} n={n} selConds={selConds} sex={sex} age={age} isOpen={openNuts.has(n.id)} onToggle={()=>{const x=new Set(openNuts);if(x.has(n.id))x.delete(n.id);else x.add(n.id);setOpenNuts(x);}}/>)}</>}
-      </>
-    );
-    if(id==="limit") return (
-      <>
-        <div style={{fontSize:"1.05rem",fontWeight:600,color:t.pri,marginBottom:6,paddingBottom:8,display:"flex",alignItems:"center",gap:8}}><NavIcon type="limit" color={t.pri}/> Foods to Limit</div>
-        <p style={{fontSize:".88rem",color:"#777",marginBottom:16,lineHeight:1.65}}>Reducing these foods consistently may meaningfully support your selected conditions. They are not prohibited \u2014 frequency and portion size matter most.</p>
-        {relF.length>0?(
+        {relF.length>0&&<>
+          <div style={{fontSize:".78rem",fontWeight:700,textTransform:"uppercase",letterSpacing:".08em",color:t.pri,margin:"24px 0 8px"}}>Foods to Limit</div>
+          <p style={{fontSize:".85rem",color:"#777",marginBottom:12,lineHeight:1.55}}>Not prohibited \u2014 frequency and portion size matter most.</p>
           <div style={{background:"#fff",borderRadius:12,padding:"18px 20px",marginBottom:16,boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>
             {relF.map((f,i)=><div key={i} style={{display:"flex",gap:10,marginBottom:i<relF.length-1?10:0,fontSize:".87rem"}}><span style={{color:"#c0392b",fontWeight:700,flexShrink:0,marginTop:1}}>{"\u2192"}</span><div><strong style={{color:"#333",display:"block",marginBottom:2,fontWeight:500}}>{f.food}</strong><span style={{color:"#777"}}>{f.reason}</span></div></div>)}
           </div>
-        ):<div style={{background:"#fff",borderRadius:12,padding:20,fontSize:".87rem",color:"#999",fontStyle:"italic",textAlign:"center",boxShadow:"0 2px 6px rgba(0,0,0,.05)"}}>No specific foods to limit identified.</div>}
+        </>}
       </>
     );
     if(id==="supplements") return (
@@ -554,7 +557,7 @@ export default function NutriGuide() {
   const NavItems = () => (
     <>
       {navSections.map(s=>(
-        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?500:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
+        <div key={s.id} onClick={()=>setActiveNav(s.id)} style={{display:"flex",alignItems:"center",gap:8,padding:"11px 13px 11px 16px",fontSize:".87rem",color:activeNav===s.id?t.pri:"#777",cursor:"pointer",fontWeight:activeNav===s.id?500:400,borderLeft:activeNav===s.id?`3px solid ${t.pri}`:"3px solid transparent",transition:"all .15s",background:"transparent"}}>
           <span style={{width:18,height:18,display:"flex",alignItems:"center",justifyContent:"center"}}><NavIcon type={s.id} color={activeNav===s.id?t.pri:"#666"}/></span>
           {s.labelLong}
         </div>
@@ -577,8 +580,8 @@ export default function NutriGuide() {
                 <circle cx="24" cy="24" r="2.8" fill="#fff"/>
               </svg>
               <div>
-                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:300,color:"#2E7AD9"}}>Guide</span></div>
-                <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Personalized Nutrition Guidance</div>
+                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:550,color:"#2E7AD9"}}>Nutri</span><span style={{fontWeight:350,color:"#2E7AD9"}}>Guide</span></div>
+                <div style={{fontSize:".72rem",color:"#777",marginTop:1}}>Personalized Nutrition Guidance</div>
               </div>
             </div>
           </div>
@@ -625,11 +628,11 @@ export default function NutriGuide() {
       </div>
 
       {/* Mobile bottom tab bar with labels */}
-      <div className="ngBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:8,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)"}}>
+      <div className="ngBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-evenly",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:12,paddingBottom:"calc(env(safe-area-inset-bottom) + 10px)",paddingLeft:12,paddingRight:12}}>
         {navSections.map(s=>(
-          <button key={s.id} onClick={()=>setActiveNav(s.id)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,transition:"all .15s",padding:0}} aria-label={s.labelLong}>
-            <NavIcon type={s.id} color={activeNav===s.id?t.pri:"#999"}/>
-            <span style={{fontSize:".62rem",fontWeight:activeNav===s.id?600:400,color:activeNav===s.id?t.pri:"#999",letterSpacing:".01em"}}>{s.label}</span>
+          <button key={s.id} onClick={()=>setActiveNav(s.id)} style={{border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,transition:"all .15s",padding:"0 4px",height:50}} aria-label={s.labelLong}>
+            <NavIcon type={s.id} color={activeNav===s.id?t.pri:"#999"} size={22} weight={2.4}/>
+            <span style={{fontSize:".7rem",fontWeight:activeNav===s.id?600:500,color:activeNav===s.id?t.pri:"#999",letterSpacing:".01em"}}>{s.label}</span>
           </button>
         ))}
       </div>
