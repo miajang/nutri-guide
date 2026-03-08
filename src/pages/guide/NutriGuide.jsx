@@ -295,10 +295,10 @@ const ChatPanel = ({isOpen,onClose,selConds,sex,age,relNutrients}) => {
   return (
     <>
       <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
-      <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden",border:`1px solid ${t.mid}`}}>
-        <div style={{padding:"14px 18px",background:t.lt,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
-          <div><div style={{fontWeight:500,fontSize:".92rem",color:t.pri}}>Ask Expert</div><div style={{fontSize:".72rem",color:"#777"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
-          <button onClick={onClose} style={{background:"#fff",border:`1px solid ${t.mid}`,color:"#777",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+      <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+        <div style={{padding:"14px 18px",background:t.pri,display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
+          <div><div style={{fontWeight:500,fontSize:".92rem",color:"#fff"}}>Ask Expert</div><div style={{fontSize:".72rem",color:"rgba(255,255,255,.7)"}}>{selConds.length} {"condition"}{selConds.length>1?"s":""} {"\u00B7"} Personalized AI Guidance</div></div>
+          <button onClick={onClose} style={{background:"none",border:"none",color:"#fff",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
         </div>
         <div style={{flex:1,overflowY:"auto",padding:16}}>
           {msgs.length===0&&(
@@ -339,9 +339,9 @@ const SettingsPanel = ({isOpen, onClose, sex, setSex, age, setAge, selected, tog
       <div onClick={onClose} style={{position:"absolute",inset:0,background:"rgba(0,0,0,.35)"}}/>
       <div style={{position:"relative",background:"#fff",borderRadius:16,width:"min(560px, 92vw)",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 12px 40px rgba(0,0,0,.18)"}}>
         {/* Header */}
-        <div style={{padding:"18px 24px",background:t.lt,borderBottom:"none",borderRadius:"16px 16px 0 0",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-          <div style={{fontSize:"1rem",fontWeight:600,color:t.pri}}>Settings</div>
-          <button onClick={onClose} style={{width:30,height:30,borderRadius:8,background:"#fff",border:`1px solid ${t.mid}`,cursor:"pointer",fontSize:".85rem",color:"#777",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
+        <div style={{padding:"18px 24px",background:t.pri,borderBottom:"none",borderRadius:"16px 16px 0 0",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div style={{fontSize:"1rem",fontWeight:600,color:"#fff"}}>Settings</div>
+          <button onClick={onClose} style={{width:30,height:30,borderRadius:8,background:"none",border:"none",cursor:"pointer",fontSize:".85rem",color:"#fff",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
         </div>
 
         <div style={{padding:"24px",background:"#F9FAFB"}}>
