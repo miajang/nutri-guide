@@ -99,7 +99,7 @@ const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
   const inputRef=useRef(null);
 
   useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth"});},[msgs,loading]);
-  useEffect(()=>{if(isOpen){setMsgs([]);setInput("");inputRef.current?.focus();}},[isOpen]);
+  useEffect(()=>{if(isOpen){setMsgs([]);setInput("");}},[isOpen]);
 
   const send=async()=>{
     if(!input.trim()||loading)return;
