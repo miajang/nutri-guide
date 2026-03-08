@@ -42,7 +42,7 @@ const foodTypes = ["all","Vegetables","Fruits","Dairy","Meat","Seafood","Legumes
 const foodLabels = {all:"All Foods",Vegetables:"Vegetables",Fruits:"Fruits",Dairy:"Dairy",Meat:"Meat & Poultry",Seafood:"Seafood",Legumes:"Legumes",Grains:"Grains & Seeds",Nuts:"Nuts",Eggs:"Eggs",Oils:"Oils & Fats",Other:"Other"};
 
 // ─── BLUE COLOR PALETTE ───
-const t = { pri:"#2E7AD9", lt:"#EAF2FB", mid:"#ABCBF0", dk:"#1a5ba0", badge:"#D5E5F7", badgeTxt:"#1a5ba0", learn:"#5895E1", contentBg:"#F9FAFB" };
+const t = { pri:"#2E7AD9", btn:"#5895E1", lt:"#EAF2FB", mid:"#ABCBF0", dk:"#1a5ba0", badge:"#D5E5F7", badgeTxt:"#1a5ba0", learn:"#5895E1", hover:"#EAF2FB", contentBg:"#F9FAFB" };
 // ─── AI CHAT HELPERS ───
 const CHAT_SYS = `You are NutrientExplorer AI, a nutrition knowledge assistant helping adults 50+ understand nutrients.
 
@@ -113,33 +113,34 @@ const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
   return (
     <>
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:499}}/>
-    <div style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",width:"min(420px, 92vw)",height:"min(620px, 80vh)",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
-      <div style={{padding:"14px 18px",background:t.pri,borderBottom:"none",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+    <div style={{position:"fixed",top:100,right:24,width:"min(420px, 92vw)",maxHeight:"min(620px, 80vh)",height:"auto",background:"#fff",borderRadius:16,boxShadow:"0 12px 40px rgba(0,0,0,.2)",zIndex:500,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+      <div style={{padding:"14px 18px",background:t.pri,borderBottom:"none",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0,borderRadius:"16px 16px 0 0"}}>
         <div><div style={{fontWeight:500,fontSize:".92rem",color:"#fff"}}>Ask Expert</div><div style={{fontSize:".72rem",color:"rgba(255,255,255,.7)"}}>Nutrient Explorer {"\u00B7"} AI Guidance</div></div>
         <button onClick={onClose} style={{background:"none",border:"none",color:"#fff",width:28,height:28,borderRadius:6,cursor:"pointer",fontSize:".85rem",display:"flex",alignItems:"center",justifyContent:"center"}}>{"\u2715"}</button>
       </div>
-      <div style={{flex:1,overflowY:"auto",padding:16}}>
+      <div style={{flex:"0 1 auto",overflowY:"auto",padding:16}}>
         {msgs.length===0&&(
           <div>
-            <p style={{fontSize:".85rem",color:"#777",marginBottom:8,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor. Try asking:"}</p>
+            <p style={{fontSize:".85rem",color:"#777",marginBottom:8,marginTop:4,lineHeight:1.6}}>{"Hi! I\u2019m your AI nutrition advisor. Try asking:"}</p>
             <div style={{display:"flex",flexDirection:"column",gap:5}}>
-              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:500}}>{s}</button>)}
+              {suggestions.map((s,i)=><button key={i} onClick={()=>setInput(s)} style={{background:t.lt,border:"none",borderRadius:8,padding:"8px 12px",fontSize:".82rem",color:"#666",cursor:"pointer",textAlign:"left",fontWeight:400}}>{s}</button>)}
             </div>
+            <div style={{height:12}}/>
           </div>
         )}
         {msgs.map((m,i)=>(
-          <div key={i} style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
-            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.badge:t.lt,color:"#666",fontSize:".86rem",lineHeight:1.7}}>
+          <div key={i} data-chat-msg style={{marginBottom:12,display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start"}}>
+            <div style={{maxWidth:"85%",padding:"10px 14px",borderRadius:m.role==="user"?"14px 14px 4px 14px":"14px 14px 14px 4px",background:m.role==="user"?t.hover:"#F7F7F8",color:m.role==="user"?"#444":"#555",fontSize:".86rem",lineHeight:1.7}}>
               {m.text.split("\n").filter(Boolean).map((p,j)=><p key={j} style={{marginBottom:4}}>{renderMsg(p)}</p>)}
             </div>
           </div>
         ))}
-        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:t.lt}}><Spinner/></div></div>}
+        {loading&&<div style={{display:"flex",justifyContent:"flex-start",marginBottom:12}}><div style={{padding:"10px 14px",borderRadius:"14px 14px 14px 4px",background:"#F7F7F8"}}><Spinner/></div></div>}
         <div ref={endRef}/>
       </div>
       <div style={{padding:"10px 14px",borderTop:"1px solid #e8eeec",display:"flex",gap:8,flexShrink:0,background:"#fff"}}>
         <input ref={inputRef} value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==="Enter")send()}} placeholder="Ask about nutrients..." style={{flex:1,padding:"10px 14px",border:`1.5px solid ${t.mid}`,borderRadius:10,fontSize:".88rem",outline:"none"}}/>
-        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.pri,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:700,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
+        <button onClick={send} disabled={!input.trim()||loading} style={{background:t.btn,color:"#fff",border:"none",borderRadius:10,padding:"0 18px",fontWeight:600,cursor:input.trim()&&!loading?"pointer":"not-allowed",opacity:input.trim()&&!loading?1:.5,fontSize:".88rem"}}>Send</button>
       </div>
     </div>
     </>
@@ -147,11 +148,12 @@ const ExplorerChatPanel = ({isOpen,onClose,sex,age,t}) => {
 };
 
 // ─── NAV ICONS FOR BOTTOM BAR ───
-const CatNavIcon = ({type,color}) => {
-  if(type==="Vitamin") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.5 2.5a6 6 0 0 1 3 0"/><path d="M12 2v4"/><circle cx="12" cy="14" r="7"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>;
-  if(type==="Mineral") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>;
-  if(type==="Macronutrient") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18"/><path d="M5.5 8c2-3 4.5-4 6.5-4s4.5 1 6.5 4"/><path d="M5.5 16c2 3 4.5 4 6.5 4s4.5-1 6.5-4"/></svg>;
-  if(type==="Phytonutrient") return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8c.7-1 1-2.2 1-3.5C18 2.5 16.5 1 14.5 1c-1.3 0-2.5.5-3 1.5C11 1.5 9.8 1 8.5 1 6.5 1 5 2.5 5 4.5c0 1.3.3 2.5 1 3.5"/><path d="M11.5 8v13"/><path d="M7 12c2-1.5 4.5-1.5 4.5-1.5s2.5 0 4.5 1.5"/></svg>;
+const CatNavIcon = ({type,color,size,weight}) => {
+  const sz=size||18,sw=weight||1.8;
+  if(type==="Vitamin") return <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"><path d="M10.5 2.5a6 6 0 0 1 3 0"/><path d="M12 2v4"/><circle cx="12" cy="14" r="7"/><path d="M9 12h6"/><path d="M12 9v6"/></svg>;
+  if(type==="Mineral") return <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></svg>;
+  if(type==="Macronutrient") return <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18"/><path d="M5.5 8c2-3 4.5-4 6.5-4s4.5 1 6.5 4"/><path d="M5.5 16c2 3 4.5 4 6.5 4s4.5-1 6.5-4"/></svg>;
+  if(type==="Phytonutrient") return <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round"><path d="M17 8c.7-1 1-2.2 1-3.5C18 2.5 16.5 1 14.5 1c-1.3 0-2.5.5-3 1.5C11 1.5 9.8 1 8.5 1 6.5 1 5 2.5 5 4.5c0 1.3.3 2.5 1 3.5"/><path d="M11.5 8v13"/><path d="M7 12c2-1.5 4.5-1.5 4.5-1.5s2.5 0 4.5 1.5"/></svg>;
   return null;
 };
 
@@ -210,8 +212,8 @@ export default function NutrientExplorer() {
             <div style={{display:"flex",alignItems:"center",gap:7}}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:26,height:26,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.pri}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
               <div>
-                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:500,color:t.pri}}>Nutrient</span><span style={{fontWeight:300,color:t.pri}}>Explorer</span></div>
-                <div style={{fontSize:".72rem",color:"#aaa",marginTop:1}}>Your Nutrition Library</div>
+                <div style={{fontSize:"1.1rem"}}><span style={{fontWeight:550,color:t.pri}}>Nutrient</span><span style={{fontWeight:350,color:t.pri}}>Explorer</span></div>
+                <div style={{fontSize:".72rem",color:"#777",marginTop:1}}>Your Nutrition Library</div>
               </div>
             </div>
           </div>
@@ -257,7 +259,7 @@ export default function NutrientExplorer() {
           </div>
           {/* Content */}
           <div style={{ padding: "20px 24px" }}>
-            {filtered.length === 0 && <div style={{ background: "#fff", borderRadius: 12, padding: "48px 20px", fontSize: ".9rem", color: "#aaa", textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,.04)" }}>No nutrients match your search or filters.</div>}
+            {filtered.length === 0 && <div style={{ background: "#fff", borderRadius: 12, padding: "48px 20px", fontSize: ".9rem", color: "#999", textAlign: "center", boxShadow: "0 1px 3px rgba(0,0,0,.04)" }}>No nutrients match your search or filters.</div>}
             {catOrder.map((cat) => {
               const items = grouped[cat];
               if (!items || !items.length) return null;
@@ -274,22 +276,22 @@ export default function NutrientExplorer() {
           <div style={{padding:"16px 0",marginTop:12,textAlign:"center"}}>
             <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{width:16,height:16,flexShrink:0}}><circle cx="24" cy="24" r="24" fill={t.pri}/><circle cx="21" cy="21" r="7.5" fill="none" stroke="#fff" strokeWidth="2.2"/><line x1="26.5" y1="26.5" x2="34" y2="34" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
-              <span style={{fontSize:".82rem"}}><span style={{fontWeight:500,color:t.pri}}>Nutrient</span><span style={{fontWeight:300,color:t.pri}}>Explorer</span></span>
-              <span style={{fontSize:".68rem",color:"#aaa"}}>&middot;</span>
-              <span style={{fontSize:".68rem",color:"#aaa"}}>Your Nutrition Library</span>
+              <span style={{fontSize:".82rem"}}><span style={{fontWeight:550,color:t.pri}}>Nutrient</span><span style={{fontWeight:350,color:t.pri}}>Explorer</span></span>
+              <span style={{fontSize:".68rem",color:"#777"}}>&middot;</span>
+              <span style={{fontSize:".68rem",color:"#777"}}>Your Nutrition Library</span>
             </div>
-            <div style={{fontSize:".68rem",color:"#aaa",marginTop:10}}>Health &amp; Wellness Innovations</div>
+            <div style={{fontSize:".68rem",color:"#777",marginTop:10}}>Health &amp; Wellness Innovations</div>
           </div>
           </div>
         </main>
       </div>
 
       {/* ── MOBILE BOTTOM NAV ── */}
-      <div className="neBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:8,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)"}}>
+      <div className="neBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-evenly",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:12,paddingBottom:"calc(env(safe-area-inset-bottom) + 10px)",paddingLeft:12,paddingRight:12}}>
         {catOrder.map(c=>(
-          <button key={c} onClick={()=>navigateCat(c)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:0}} aria-label={catNames[c]}>
-            <CatNavIcon type={c} color={activeCat===c?t.pri:"#999"}/>
-            <span style={{fontSize:".62rem",fontWeight:activeCat===c?600:400,color:activeCat===c?t.pri:"#999",letterSpacing:".01em"}}>{catNavLabels[c]}</span>
+          <button key={c} onClick={()=>navigateCat(c)} style={{border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:"0 4px",height:50}} aria-label={catNames[c]}>
+            <CatNavIcon type={c} color={activeCat===c?t.pri:"#999"} size={22} weight={2.4}/>
+            <span style={{fontSize:".7rem",fontWeight:activeCat===c?600:500,color:activeCat===c?t.pri:"#999",letterSpacing:".01em"}}>{catNavLabels[c]}</span>
           </button>
         ))}
       </div>
@@ -306,7 +308,7 @@ export default function NutrientExplorer() {
 // ─── SIDEBAR CATEGORY BUTTON ───
 function CatBtn({ label, active, color, onClick }) {
   return (
-    <button onClick={onClick} style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 16px", border: "none", background: "none", cursor: "pointer", fontSize: ".87rem", color: active ? color : "#777", fontWeight: active ? 500 : 400, borderLeft: `3px solid ${active ? color : "transparent"}`, transition: "all .15s" }}>{label}</button>
+    <button onClick={onClick} style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 13px 11px 16px", border: "none", background: "none", cursor: "pointer", fontSize: ".87rem", color: active ? color : "#777", fontWeight: active ? 500 : 400, borderLeft: `3px solid ${active ? color : "transparent"}`, transition: "all .15s" }}>{label}</button>
   );
 }
 
