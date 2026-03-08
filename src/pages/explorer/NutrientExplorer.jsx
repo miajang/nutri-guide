@@ -42,7 +42,7 @@ const foodTypes = ["all","Vegetables","Fruits","Dairy","Meat","Seafood","Legumes
 const foodLabels = {all:"All Foods",Vegetables:"Vegetables",Fruits:"Fruits",Dairy:"Dairy",Meat:"Meat & Poultry",Seafood:"Seafood",Legumes:"Legumes",Grains:"Grains & Seeds",Nuts:"Nuts",Eggs:"Eggs",Oils:"Oils & Fats",Other:"Other"};
 
 // ─── BLUE COLOR PALETTE ───
-const t = { pri:"#2E7AD9", lt:"#EAF2FB", mid:"#ABCBF0", dk:"#1a5ba0", badge:"#D5E5F7", badgeTxt:"#1a5ba0", learn:"#5895E1", contentBg:"#f2f4f8" };
+const t = { pri:"#2E7AD9", lt:"#EAF2FB", mid:"#ABCBF0", dk:"#1a5ba0", badge:"#D5E5F7", badgeTxt:"#1a5ba0", learn:"#5895E1", contentBg:"#F9FAFB" };
 // ─── AI CHAT HELPERS ───
 const CHAT_SYS = `You are NutrientExplorer AI, a nutrition knowledge assistant helping adults 50+ understand nutrients.
 
@@ -159,7 +159,7 @@ const catNavLabels = {Vitamin:"Vitamins",Mineral:"Minerals",Macronutrient:"Macro
 
 // ─── MAIN APP ───
 export default function NutrientExplorer() {
-  const [activeCat, setActiveCat] = useState("all");
+  const [activeCat, setActiveCat] = useState("Vitamin");
   const [foodFilter, setFoodFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [sex, setSex] = useState("female");
@@ -193,7 +193,6 @@ export default function NutrientExplorer() {
   // ── DESKTOP SIDEBAR NAV ──
   const NavItems = () => (
     <>
-      <CatBtn label="All Nutrients" active={activeCat==="all"} color={t.pri} onClick={()=>navigateCat("all")} />
       {catOrder.map((c) => (
         <CatBtn key={c} label={catNames[c]} active={activeCat===c} color={t.pri} onClick={()=>navigateCat(c)} />
       ))}
@@ -227,7 +226,7 @@ export default function NutrientExplorer() {
         </div>
         {isMobile && (
           <div style={{marginTop:8}}>
-            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{width:"100%",padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
+            <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:"100%",padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
           </div>
         )}
       </header>
@@ -252,7 +251,7 @@ export default function NutrientExplorer() {
             </label>
             {!isMobile && (
               <div style={{marginLeft:"auto"}}>
-                <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients\u2026" style={{width:280,padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
+                <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search nutrients…" style={{width:280,padding:"7px 14px",border:"1.5px solid #dce4e1",borderRadius:8,fontSize:".88rem",outline:"none",color:"#555",boxSizing:"border-box"}}/>
               </div>
             )}
           </div>
@@ -287,10 +286,6 @@ export default function NutrientExplorer() {
 
       {/* ── MOBILE BOTTOM NAV ── */}
       <div className="neBottomBar" style={{display:"none",position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:"1px solid #e8eeec",justifyContent:"space-around",alignItems:"center",zIndex:200,boxShadow:"0 -2px 8px rgba(0,0,0,.06)",paddingTop:8,paddingBottom:"calc(env(safe-area-inset-bottom) + 8px)"}}>
-        <button onClick={()=>navigateCat("all")} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:0}} aria-label="All Nutrients">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={activeCat==="all"?t.pri:"#999"} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
-          <span style={{fontSize:".62rem",fontWeight:activeCat==="all"?600:400,color:activeCat==="all"?t.pri:"#999",letterSpacing:".01em"}}>All</span>
-        </button>
         {catOrder.map(c=>(
           <button key={c} onClick={()=>navigateCat(c)} style={{flex:1,height:56,border:"none",background:"transparent",cursor:"pointer",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:3,padding:0}} aria-label={catNames[c]}>
             <CatNavIcon type={c} color={activeCat===c?t.pri:"#999"}/>
@@ -318,7 +313,7 @@ function CatBtn({ label, active, color, onClick }) {
 // ─── NUTRIENT CARD ───
 function NutrientCard({ nutrient, theme, onClick }) {
   return (
-    <div onClick={onClick} style={{ background: "#f8faf9", borderRadius: 10, overflow: "hidden", cursor: "pointer", display: "flex", flexDirection: "column", transition: "box-shadow .15s, transform .15s" }}
+    <div onClick={onClick} style={{ background: "#fff", borderRadius: 10, overflow: "hidden", cursor: "pointer", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,.04)", transition: "box-shadow .15s, transform .15s" }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,.08)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; }}>
       <div style={{ padding: "13px 15px", flex: 1, display: "flex", flexDirection: "column" }}>
